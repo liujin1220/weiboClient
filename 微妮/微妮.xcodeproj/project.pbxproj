@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44227A4D19C7216F0055C041 /* UIView+Addtion.m in Sources */ = {isa = PBXBuildFile; fileRef = 44227A4C19C7216F0055C041 /* UIView+Addtion.m */; };
 		442D7A7319C1552A009AEEF7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442D7A7219C1552A009AEEF7 /* Foundation.framework */; };
 		442D7A7519C1552A009AEEF7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442D7A7419C1552A009AEEF7 /* CoreGraphics.framework */; };
 		442D7A7719C1552A009AEEF7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442D7A7619C1552A009AEEF7 /* UIKit.framework */; };
@@ -19,6 +20,22 @@
 		442D7A8E19C1552A009AEEF7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 442D7A7619C1552A009AEEF7 /* UIKit.framework */; };
 		442D7A9619C1552A009AEEF7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 442D7A9419C1552A009AEEF7 /* InfoPlist.strings */; };
 		442D7A9819C1552A009AEEF7 /* __Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 442D7A9719C1552A009AEEF7 /* __Tests.m */; };
+		442D7AAA19C1DC12009AEEF7 /* CustomTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442D7AA919C1DC12009AEEF7 /* CustomTabBarViewController.m */; };
+		447D22B719C6C7D60076EA79 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 447D22B019C6C7D60076EA79 /* blackArrow@2x.png */; };
+		447D22B819C6C7D60076EA79 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 447D22B119C6C7D60076EA79 /* blueArrow.png */; };
+		447D22B919C6C7D60076EA79 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 447D22B219C6C7D60076EA79 /* blueArrow@2x.png */; };
+		447D22BA19C6C7D60076EA79 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22B419C6C7D60076EA79 /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		447D22BB19C6C7D60076EA79 /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 447D22B519C6C7D60076EA79 /* grayArrow.png */; };
+		447D22BC19C6C7D60076EA79 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 447D22B619C6C7D60076EA79 /* grayArrow@2x.png */; };
+		447D22C019C6D7E70076EA79 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22BF19C6D7E70076EA79 /* MainTableViewController.m */; };
+		447D22CA19C6DC040076EA79 /* SinaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22C919C6DC040076EA79 /* SinaCell.m */; };
+		447D22CD19C6DEA20076EA79 /* NSString+autoFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22CC19C6DEA20076EA79 /* NSString+autoFit.m */; };
+		447D22D019C6DED80076EA79 /* UIImageView+LoadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22CF19C6DED80076EA79 /* UIImageView+LoadView.m */; };
+		447D22D319C6E1B60076EA79 /* WeiboDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22D219C6E1B60076EA79 /* WeiboDataSource.m */; };
+		447D22DE19C70F490076EA79 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22DD19C70F490076EA79 /* LogViewController.m */; };
+		447D22E019C713030076EA79 /* me_head_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 447D22DF19C713030076EA79 /* me_head_default@2x.png */; };
+		447D22E419C714ED0076EA79 /* BlockButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22E319C714ED0076EA79 /* BlockButton.m */; };
+		44C30E1319D2F0B300E88059 /* libTCWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C30E1019D2F0B300E88059 /* libTCWeiboSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		44227A4B19C7216F0055C041 /* UIView+Addtion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Addtion.h"; sourceTree = "<group>"; };
+		44227A4C19C7216F0055C041 /* UIView+Addtion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Addtion.m"; sourceTree = "<group>"; };
 		442D7A6F19C1552A009AEEF7 /* 微妮.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "微妮.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		442D7A7219C1552A009AEEF7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		442D7A7419C1552A009AEEF7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -48,6 +67,34 @@
 		442D7A9319C1552A009AEEF7 /* 微妮Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "微妮Tests-Info.plist"; sourceTree = "<group>"; };
 		442D7A9519C1552A009AEEF7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		442D7A9719C1552A009AEEF7 /* __Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = __Tests.m; sourceTree = "<group>"; };
+		442D7AA719C15C04009AEEF7 /* CONSTS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CONSTS.h; path = ../CONSTS.h; sourceTree = "<group>"; };
+		442D7AA819C1DC11009AEEF7 /* CustomTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTabBarViewController.h; path = "微妮/CustomTabBarViewController.h"; sourceTree = "<group>"; };
+		442D7AA919C1DC12009AEEF7 /* CustomTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTabBarViewController.m; path = "微妮/CustomTabBarViewController.m"; sourceTree = "<group>"; };
+		447D22B019C6C7D60076EA79 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
+		447D22B119C6C7D60076EA79 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
+		447D22B219C6C7D60076EA79 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
+		447D22B319C6C7D60076EA79 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		447D22B419C6C7D60076EA79 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		447D22B519C6C7D60076EA79 /* grayArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayArrow.png; sourceTree = "<group>"; };
+		447D22B619C6C7D60076EA79 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
+		447D22BE19C6D7E70076EA79 /* MainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewController.h; sourceTree = "<group>"; };
+		447D22BF19C6D7E70076EA79 /* MainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTableViewController.m; sourceTree = "<group>"; };
+		447D22C819C6DBFC0076EA79 /* SinaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaCell.h; sourceTree = "<group>"; };
+		447D22C919C6DC040076EA79 /* SinaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaCell.m; sourceTree = "<group>"; };
+		447D22CB19C6DE9B0076EA79 /* NSString+autoFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+autoFit.h"; sourceTree = "<group>"; };
+		447D22CC19C6DEA20076EA79 /* NSString+autoFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+autoFit.m"; sourceTree = "<group>"; };
+		447D22CE19C6DED10076EA79 /* UIImageView+LoadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+LoadView.h"; sourceTree = "<group>"; };
+		447D22CF19C6DED80076EA79 /* UIImageView+LoadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+LoadView.m"; sourceTree = "<group>"; };
+		447D22D119C6E1B60076EA79 /* WeiboDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboDataSource.h; sourceTree = "<group>"; };
+		447D22D219C6E1B60076EA79 /* WeiboDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeiboDataSource.m; sourceTree = "<group>"; };
+		447D22DC19C70F490076EA79 /* LogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogViewController.h; sourceTree = "<group>"; };
+		447D22DD19C70F490076EA79 /* LogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
+		447D22DF19C713030076EA79 /* me_head_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "me_head_default@2x.png"; sourceTree = "<group>"; };
+		447D22E219C714E80076EA79 /* BlockButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockButton.h; sourceTree = "<group>"; };
+		447D22E319C714ED0076EA79 /* BlockButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockButton.m; sourceTree = "<group>"; };
+		44C30E1019D2F0B300E88059 /* libTCWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTCWeiboSDK.a; sourceTree = "<group>"; };
+		44C30E1119D2F0B300E88059 /* WeiboApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboApi.h; sourceTree = "<group>"; };
+		44C30E1219D2F0B300E88059 /* WeiboApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboApiObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44C30E1319D2F0B300E88059 /* libTCWeiboSDK.a in Frameworks */,
 				442D7A7519C1552A009AEEF7 /* CoreGraphics.framework in Frameworks */,
 				442D7A7719C1552A009AEEF7 /* UIKit.framework in Frameworks */,
 				442D7A7319C1552A009AEEF7 /* Foundation.framework in Frameworks */,
@@ -77,6 +125,14 @@
 		442D7A6619C1552A009AEEF7 = {
 			isa = PBXGroup;
 			children = (
+				44C30E0F19D2F0B300E88059 /* TCWeiboSDK */,
+				447D22E919C71F300076EA79 /* Category */,
+				447D22E119C714CF0076EA79 /* Blockbutton */,
+				447D22D519C70E4F0076EA79 /* login */,
+				447D22AF19C6C7D60076EA79 /* EGOTableViewPullRefresh */,
+				447D22A719C6C4860076EA79 /* images */,
+				442D7AAC19C1DE88009AEEF7 /* main */,
+				442D7AAB19C1DE74009AEEF7 /* TabBar */,
 				442D7A7819C1552A009AEEF7 /* 微妮 */,
 				442D7A9119C1552A009AEEF7 /* 微妮Tests */,
 				442D7A7119C1552A009AEEF7 /* Frameworks */,
@@ -109,6 +165,7 @@
 			children = (
 				442D7A8119C1552A009AEEF7 /* AppDelegate.h */,
 				442D7A8219C1552A009AEEF7 /* AppDelegate.m */,
+				442D7AA719C15C04009AEEF7 /* CONSTS.h */,
 				442D7A8419C1552A009AEEF7 /* Images.xcassets */,
 				442D7A7919C1552A009AEEF7 /* Supporting Files */,
 			);
@@ -142,6 +199,115 @@
 				442D7A9419C1552A009AEEF7 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		442D7AAB19C1DE74009AEEF7 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				442D7AA819C1DC11009AEEF7 /* CustomTabBarViewController.h */,
+				442D7AA919C1DC12009AEEF7 /* CustomTabBarViewController.m */,
+			);
+			name = TabBar;
+			sourceTree = "<group>";
+		};
+		442D7AAC19C1DE88009AEEF7 /* main */ = {
+			isa = PBXGroup;
+			children = (
+				447D22C319C6D8990076EA79 /* Model */,
+				447D22C219C6D8580076EA79 /* View */,
+				447D22C119C6D8460076EA79 /* Controller */,
+			);
+			name = main;
+			sourceTree = "<group>";
+		};
+		447D22A719C6C4860076EA79 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				447D22DF19C713030076EA79 /* me_head_default@2x.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
+		447D22AF19C6C7D60076EA79 /* EGOTableViewPullRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				447D22B019C6C7D60076EA79 /* blackArrow@2x.png */,
+				447D22B119C6C7D60076EA79 /* blueArrow.png */,
+				447D22B219C6C7D60076EA79 /* blueArrow@2x.png */,
+				447D22B319C6C7D60076EA79 /* EGORefreshTableHeaderView.h */,
+				447D22B419C6C7D60076EA79 /* EGORefreshTableHeaderView.m */,
+				447D22B519C6C7D60076EA79 /* grayArrow.png */,
+				447D22B619C6C7D60076EA79 /* grayArrow@2x.png */,
+			);
+			path = EGOTableViewPullRefresh;
+			sourceTree = "<group>";
+		};
+		447D22C119C6D8460076EA79 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				447D22BE19C6D7E70076EA79 /* MainTableViewController.h */,
+				447D22BF19C6D7E70076EA79 /* MainTableViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		447D22C219C6D8580076EA79 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				447D22C819C6DBFC0076EA79 /* SinaCell.h */,
+				447D22C919C6DC040076EA79 /* SinaCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		447D22C319C6D8990076EA79 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				447D22D119C6E1B60076EA79 /* WeiboDataSource.h */,
+				447D22D219C6E1B60076EA79 /* WeiboDataSource.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		447D22D519C70E4F0076EA79 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				447D22DC19C70F490076EA79 /* LogViewController.h */,
+				447D22DD19C70F490076EA79 /* LogViewController.m */,
+			);
+			name = login;
+			sourceTree = "<group>";
+		};
+		447D22E119C714CF0076EA79 /* Blockbutton */ = {
+			isa = PBXGroup;
+			children = (
+				447D22E219C714E80076EA79 /* BlockButton.h */,
+				447D22E319C714ED0076EA79 /* BlockButton.m */,
+			);
+			name = Blockbutton;
+			sourceTree = "<group>";
+		};
+		447D22E919C71F300076EA79 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				447D22CE19C6DED10076EA79 /* UIImageView+LoadView.h */,
+				447D22CF19C6DED80076EA79 /* UIImageView+LoadView.m */,
+				447D22CC19C6DEA20076EA79 /* NSString+autoFit.m */,
+				447D22CB19C6DE9B0076EA79 /* NSString+autoFit.h */,
+				44227A4B19C7216F0055C041 /* UIView+Addtion.h */,
+				44227A4C19C7216F0055C041 /* UIView+Addtion.m */,
+			);
+			name = Category;
+			sourceTree = "<group>";
+		};
+		44C30E0F19D2F0B300E88059 /* TCWeiboSDK */ = {
+			isa = PBXGroup;
+			children = (
+				44C30E1019D2F0B300E88059 /* libTCWeiboSDK.a */,
+				44C30E1119D2F0B300E88059 /* WeiboApi.h */,
+				44C30E1219D2F0B300E88059 /* WeiboApiObject.h */,
+			);
+			path = TCWeiboSDK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,8 +385,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				447D22B919C6C7D60076EA79 /* blueArrow@2x.png in Resources */,
 				442D7A7D19C1552A009AEEF7 /* InfoPlist.strings in Resources */,
 				442D7A8519C1552A009AEEF7 /* Images.xcassets in Resources */,
+				447D22BC19C6C7D60076EA79 /* grayArrow@2x.png in Resources */,
+				447D22E019C713030076EA79 /* me_head_default@2x.png in Resources */,
+				447D22B819C6C7D60076EA79 /* blueArrow.png in Resources */,
+				447D22B719C6C7D60076EA79 /* blackArrow@2x.png in Resources */,
+				447D22BB19C6C7D60076EA79 /* grayArrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +412,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				442D7A8319C1552A009AEEF7 /* AppDelegate.m in Sources */,
+				447D22DE19C70F490076EA79 /* LogViewController.m in Sources */,
+				447D22E419C714ED0076EA79 /* BlockButton.m in Sources */,
+				442D7AAA19C1DC12009AEEF7 /* CustomTabBarViewController.m in Sources */,
+				447D22BA19C6C7D60076EA79 /* EGORefreshTableHeaderView.m in Sources */,
+				447D22D319C6E1B60076EA79 /* WeiboDataSource.m in Sources */,
+				44227A4D19C7216F0055C041 /* UIView+Addtion.m in Sources */,
+				447D22D019C6DED80076EA79 /* UIImageView+LoadView.m in Sources */,
+				447D22C019C6D7E70076EA79 /* MainTableViewController.m in Sources */,
+				447D22CA19C6DC040076EA79 /* SinaCell.m in Sources */,
 				442D7A7F19C1552A009AEEF7 /* main.m in Sources */,
+				447D22CD19C6DEA20076EA79 /* NSString+autoFit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +497,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/TCWeiboSDK";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -347,6 +530,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/TCWeiboSDK";
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -360,6 +545,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "微妮/微妮-Prefix.pch";
 				INFOPLIST_FILE = "微妮/微妮-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/TCWeiboSDK",
+					"$(inherited)",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC ";
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC ";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -373,6 +565,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "微妮/微妮-Prefix.pch";
 				INFOPLIST_FILE = "微妮/微妮-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/TCWeiboSDK",
+					"$(inherited)",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC ";
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC ";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -437,6 +636,7 @@
 				442D7A9D19C1552A009AEEF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		442D7A9E19C1552A009AEEF7 /* Build configuration list for PBXNativeTarget "微妮Tests" */ = {
 			isa = XCConfigurationList;
@@ -445,6 +645,7 @@
 				442D7AA019C1552A009AEEF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
