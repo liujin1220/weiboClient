@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MainTableViewController.h"
-#import "LogViewController.h"
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import "SplashViewController.h"
 
+@interface AppDelegate : UIResponder
 @property (strong, nonatomic) UIWindow *window;
-@property(strong,nonatomic)LogViewController *logVC;
+@property(strong,nonatomic)SplashViewController *splashVC;
+
 @end

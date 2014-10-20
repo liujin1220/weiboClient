@@ -1,19 +1,18 @@
-
 //
-//  MainTableViewController.m
+//  HomeTableViewController.m
 //  微妮
 //
-//  Created by 刘锦 on 14-9-15.
+//  Created by 刘锦 on 14-10-16.
 //  Copyright (c) 2014年 liujin. All rights reserved.
 //
 
-#import "MainTableViewController.h"
+#import "HomeTableViewController.h"
 
-@interface MainTableViewController ()
+@interface HomeTableViewController ()
 
 @end
 
-@implementation MainTableViewController
+@implementation HomeTableViewController
 
 - (instancetype)initWithStyle:(UITableViewStyle)style
 {
@@ -27,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.navigationItem.title = @"首页";
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -45,13 +44,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
+#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return 0;
 }
