@@ -1,18 +1,25 @@
 //
-//  AuthorizeData.m
+//  SelectedWeiboName.m
 //  微妮
 //
-//  Created by 刘锦 on 14-9-26.
+//  Created by 刘锦 on 14/10/21.
 //  Copyright (c) 2014年 liujin. All rights reserved.
 //
 
-#import "AuthorizeData.h"
+#import "SelectedWeiboName.h"
 
-static AuthorizeData *segtonInstance = nil;
+static SelectedWeiboName *segtonInstance = nil;
 
-@implementation AuthorizeData
+@implementation SelectedWeiboName
 
-+(AuthorizeData *)sharedAuthorizeData{
+-(id)init{
+    self = [super init];
+    if (self != nil) {
+        _weiboArray = [[NSMutableArray alloc]init];
+    }
+    return self;
+}
++(SelectedWeiboName *)sharedWeiboName{
     @synchronized(self){
         if (segtonInstance == nil) {
             segtonInstance = [[[self class]alloc]init];
@@ -21,7 +28,6 @@ static AuthorizeData *segtonInstance = nil;
     }
 }
 
-#pragma mark - 下面的方法为了确保只有一个实例对象
 + (id) allocWithZone:(NSZone *)zone{
     @synchronized(self){
         if (segtonInstance == nil) {
@@ -31,8 +37,8 @@ static AuthorizeData *segtonInstance = nil;
     return segtonInstance;
 }
 
+#pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone{
     return segtonInstance;
 }
-
 @end

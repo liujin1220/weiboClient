@@ -7,7 +7,7 @@
 //
 
 #import "AuthorizeViewController.h"
-#import "AuthorizeData.h"
+#import "SelectedWeiboName.h"
 #define KACCESSTOKEN @"https://api.weibo.com/oauth2/access_token"
 
 @interface AuthorizeViewController ()
@@ -92,8 +92,16 @@
     //将json数据转化为字典
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
     //保存
-    [AuthorizeData sharedAuthorizeData].sinaToken = [dic objectForKey:@"access_token"];
-    [AuthorizeData sharedAuthorizeData].sinaUid = [dic objectForKey:@"uid"];
+    NSUserDefaults *sinaData = [NSUserDefaults standardUserDefaults];
+    [sinaData setObject:[dic objectForKey:@"access_token"] forKey:@"token"];
+    [sinaData setObject:[dic objectForKey:@"sina_uid"] forKey:@"uid"];
+    //同步到磁盘
+    [sinaData synchronize];
+    //设置当前微博
+    [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"新浪微博"];
+    [SelectedWeiboName sharedWeiboName].weiboName = @"新浪微博";
+    [SelectedWeiboName sharedWeiboName].token = [dic objectForKey:@"access_token"];
+    [SelectedWeiboName sharedWeiboName].uid = [dic objectForKey:@"sina_uid"];
     //成功，进入下一级
     [self presentViewController:(UIViewController *)[RootViewController sharedRootViewController].ddMenu animated:YES completion:nil];
 }

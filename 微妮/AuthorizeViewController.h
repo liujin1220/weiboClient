@@ -11,6 +11,7 @@
 #import "RootViewController.h"
 #import "ASIFormDataRequest.h"
 @class AuthorizeData;
+@class SelectedWeiboName;
 @interface AuthorizeViewController : UIViewController<UIWebViewDelegate,ASIHTTPRequestDelegate>
 
 @property(nonatomic,strong)UIWebView *mwebView;

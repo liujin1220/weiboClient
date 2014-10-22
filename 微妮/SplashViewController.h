@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "WeiboApi.h"
 #import "ASIFormDataRequest.h"
+#import "CONSTS.h"
 @class DDMenuController;
 @class RootViewController;
-@class AuthorizeData;
 @class LogViewController;
 @class CustomTabBarViewController;
+@class SplashViewController;
+@class SelectedWeiboName;
 
 @interface SplashViewController : UIViewController<WeiboAuthDelegate,ASIHTTPRequestDelegate>
 @property (nonatomic , strong) WeiboApi      *wbapi;

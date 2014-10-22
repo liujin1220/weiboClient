@@ -8,7 +8,7 @@
 
 #import "LogViewController.h"
 #import "BlockButton.h"
-#import "AuthorizeData.h"
+#import "SelectedWeiboName.h"
 #define KSCALE (2/5.0)
 #define KLOGINBUTTONPOS (2/5.0)
 #define KLOGINLABELHEIGHT 40
@@ -147,10 +147,11 @@
 {
     //NSString *str = [[NSString alloc]initWithFormat:@"accesstoken = %@\r\n openid = %@\r\n appkey=%@ \r\n appsecret=%@ \r\n refreshtoken=%@ ", wbobj.accessToken, wbobj.openid, wbobj.appKey, wbobj.appSecret, wbobj.refreshToken];
     //NSLog(@"result = %@",str);
-    
-    //保存信息
-    [AuthorizeData sharedAuthorizeData].tencentToken = wbobj.refreshToken;
-    [AuthorizeData sharedAuthorizeData].tencentUid = wbobj.openid;
+    //设置当前微博
+    [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
+    [SelectedWeiboName sharedWeiboName].weiboName = @"腾讯微博";
+    [SelectedWeiboName sharedWeiboName].token = wbobj.accessToken;
+    [SelectedWeiboName sharedWeiboName].uid = wbobj.openid;
     //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
     dispatch_async(dispatch_get_main_queue(), ^{
         //进入下一级视图

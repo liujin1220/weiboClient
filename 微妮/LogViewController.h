@@ -12,7 +12,8 @@
 #import "CONSTS.h"
 #import "WeiboApi.h"
 #import "AuthorizeViewController.h"
-@class AuthorizeData;
+
+@class SelectedWeiboName;
 @class BlockButton;
 @interface LogViewController : UIViewController<WeiboRequestDelegate,WeiboAuthDelegate>
 @property (nonatomic , retain) WeiboApi                    *txwbapi;
