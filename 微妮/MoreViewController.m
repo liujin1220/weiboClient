@@ -1,22 +1,22 @@
 //
-//  SquareViewController.m
+//  MoreViewController.m
 //  微妮
 //
 //  Created by 刘锦 on 14/10/22.
 //  Copyright (c) 2014年 liujin. All rights reserved.
 //
 
-#import "SquareViewController.h"
+#import "MoreViewController.h"
 
-@interface SquareViewController ()
+@interface MoreViewController ()
 
 @end
 
-@implementation SquareViewController
+@implementation MoreViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setTitle:@"广场"];
+    [self setTitle:@"更多"];
     // Do any additional setup after loading the view.
 }
 
@@ -28,8 +28,7 @@
 #pragma mark - NSNotifiction actions
 //当切换主题时会调用
 -(void)weiboNotification:(NSNotification *)notification{
-    NSLog(@"square切换主题");
+    NSLog(@"more切换主题");
     //请求数据
 }
-
 @end

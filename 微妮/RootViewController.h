@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DDMenuController.h"
 @class CustomTabBarViewController;
-@class DDMenuController;
+@class LeftViewController;
+@class RightViewController;
 
 @interface RootViewController : NSObject<NSCopying>
 @property(nonatomic,strong)DDMenuController *ddMenu;

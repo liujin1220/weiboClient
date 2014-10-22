@@ -7,8 +7,6 @@
 //
 
 #import "SplashViewController.h"
-#import "DDMenuController.h"
-#import "CustomTabBarViewController.h"
 #import "LogViewController.h"
 #import "RootViewController.h"
 #import "SelectedWeiboName.h"
@@ -43,11 +41,6 @@
     [welcome setText:@"欢迎使用微妮"];
     [welcome setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:welcome];
-    //DDMenu
-    DDMenuController *menu = [[DDMenuController alloc]init];
-    CustomTabBarViewController *tab = [[CustomTabBarViewController alloc]init];
-    menu.rootViewController = tab;
-    [RootViewController sharedRootViewController].ddMenu =  menu;
 }
 - (void)viewDidAppear:(BOOL)animated{
     //检查新浪微博token有效性

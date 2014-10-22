@@ -1,22 +1,22 @@
 //
-//  SquareViewController.m
+//  PersonalViewController.m
 //  微妮
 //
 //  Created by 刘锦 on 14/10/22.
 //  Copyright (c) 2014年 liujin. All rights reserved.
 //
 
-#import "SquareViewController.h"
+#import "PersonalViewController.h"
 
-@interface SquareViewController ()
+@interface PersonalViewController ()
 
 @end
 
-@implementation SquareViewController
+@implementation PersonalViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setTitle:@"广场"];
+    [self setTitle:@"我"];
     // Do any additional setup after loading the view.
 }
 
@@ -28,7 +28,7 @@
 #pragma mark - NSNotifiction actions
 //当切换主题时会调用
 -(void)weiboNotification:(NSNotification *)notification{
-    NSLog(@"square切换主题");
+    NSLog(@"person切换主题");
     //请求数据
 }
 

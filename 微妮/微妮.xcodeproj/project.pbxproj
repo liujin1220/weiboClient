@@ -35,10 +35,6 @@
 		447D22E419C714ED0076EA79 /* BlockButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22E319C714ED0076EA79 /* BlockButton.m */; };
 		4480DA8219EF5B5100F53583 /* DDMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4480DA8119EF5B5100F53583 /* DDMenuController.m */; };
 		4480DA8719EF5E5300F53583 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4480DA8619EF5E5300F53583 /* RootViewController.m */; };
-		4480DA8E19EF60DE00F53583 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4480DA8D19EF60DE00F53583 /* HomeTableViewController.m */; };
-		4480DA9119EF610300F53583 /* SquareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4480DA9019EF610300F53583 /* SquareViewController.m */; };
-		4480DA9519EF612700F53583 /* PersonalTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4480DA9419EF612700F53583 /* PersonalTableViewController.m */; };
-		4480DA9819EF613300F53583 /* MoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4480DA9719EF613300F53583 /* MoreTableViewController.m */; };
 		4480DA9A19EF64B500F53583 /* personal.png in Resources */ = {isa = PBXBuildFile; fileRef = 4480DA9919EF64B500F53583 /* personal.png */; };
 		4480DA9C19EF64B900F53583 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 4480DA9B19EF64B900F53583 /* square.png */; };
 		4480DA9E19EF64BD00F53583 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 4480DA9D19EF64BD00F53583 /* home.png */; };
@@ -75,7 +71,15 @@
 		44DCDF7A19F762D0001CE20D /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44DCDF6E19F762D0001CE20D /* grayArrow@2x.png */; };
 		44DCDF7B19F762D0001CE20D /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 44DCDF6F19F762D0001CE20D /* whiteArrow.png */; };
 		44DCDF7C19F762D0001CE20D /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44DCDF7019F762D0001CE20D /* whiteArrow@2x.png */; };
-		44DCDF8419F7A56D001CE20D /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDF8319F7A56D001CE20D /* LeftViewController.m */; };
+		44DCDF8C19F7B65F001CE20D /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDF8B19F7B65F001CE20D /* BaseViewController.m */; };
+		44DCDF8F19F7BB5C001CE20D /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDF8E19F7BB5C001CE20D /* BaseNavigationController.m */; };
+		44DCDF9619F7C70D001CE20D /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDF9519F7C70D001CE20D /* MoreViewController.m */; };
+		44DCDF9919F7C7B5001CE20D /* RightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDF9819F7C7B5001CE20D /* RightViewController.m */; };
+		44DCDF9C19F7C7E3001CE20D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDF9B19F7C7E3001CE20D /* HomeViewController.m */; };
+		44DCDF9F19F7C7F9001CE20D /* SquareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDF9E19F7C7F9001CE20D /* SquareViewController.m */; };
+		44DCDFA219F7C80F001CE20D /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDFA119F7C80F001CE20D /* PersonalViewController.m */; };
+		44DCDFA519F7C845001CE20D /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DCDFA419F7C845001CE20D /* LeftViewController.m */; };
+		44DCDFA719F7D82D001CE20D /* me_head_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 44DCDFA619F7D82D001CE20D /* me_head_default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,14 +140,6 @@
 		4480DA8119EF5B5100F53583 /* DDMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDMenuController.m; sourceTree = "<group>"; };
 		4480DA8519EF5E5300F53583 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		4480DA8619EF5E5300F53583 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		4480DA8C19EF60DE00F53583 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
-		4480DA8D19EF60DE00F53583 /* HomeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
-		4480DA8F19EF610300F53583 /* SquareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareViewController.h; sourceTree = "<group>"; };
-		4480DA9019EF610300F53583 /* SquareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareViewController.m; sourceTree = "<group>"; };
-		4480DA9319EF612700F53583 /* PersonalTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalTableViewController.h; sourceTree = "<group>"; };
-		4480DA9419EF612700F53583 /* PersonalTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalTableViewController.m; sourceTree = "<group>"; };
-		4480DA9619EF613300F53583 /* MoreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreTableViewController.h; sourceTree = "<group>"; };
-		4480DA9719EF613300F53583 /* MoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreTableViewController.m; sourceTree = "<group>"; };
 		4480DA9919EF64B500F53583 /* personal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = personal.png; sourceTree = "<group>"; };
 		4480DA9B19EF64B900F53583 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
 		4480DA9D19EF64BD00F53583 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
@@ -201,8 +197,23 @@
 		44DCDF6E19F762D0001CE20D /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		44DCDF6F19F762D0001CE20D /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		44DCDF7019F762D0001CE20D /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
-		44DCDF8219F7A56D001CE20D /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
-		44DCDF8319F7A56D001CE20D /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewController.m; sourceTree = "<group>"; };
+		44DCDF8A19F7B65F001CE20D /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		44DCDF8B19F7B65F001CE20D /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		44DCDF8D19F7BB54001CE20D /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
+		44DCDF8E19F7BB5C001CE20D /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
+		44DCDF9419F7C70D001CE20D /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
+		44DCDF9519F7C70D001CE20D /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
+		44DCDF9719F7C7B5001CE20D /* RightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightViewController.h; sourceTree = "<group>"; };
+		44DCDF9819F7C7B5001CE20D /* RightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightViewController.m; sourceTree = "<group>"; };
+		44DCDF9A19F7C7E3001CE20D /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		44DCDF9B19F7C7E3001CE20D /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		44DCDF9D19F7C7F9001CE20D /* SquareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareViewController.h; sourceTree = "<group>"; };
+		44DCDF9E19F7C7F9001CE20D /* SquareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareViewController.m; sourceTree = "<group>"; };
+		44DCDFA019F7C80F001CE20D /* PersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
+		44DCDFA119F7C80F001CE20D /* PersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
+		44DCDFA319F7C845001CE20D /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
+		44DCDFA419F7C845001CE20D /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewController.m; sourceTree = "<group>"; };
+		44DCDFA619F7D82D001CE20D /* me_head_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = me_head_default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +387,7 @@
 		447D22A719C6C4860076EA79 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				44DCDFA619F7D82D001CE20D /* me_head_default.png */,
 				449C041519F3D19A009A883A /* Login */,
 				4480DAA119EF64C700F53583 /* Nav */,
 			);
@@ -385,11 +397,12 @@
 		447D22C119C6D8460076EA79 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				44DCDF8119F7A553001CE20D /* left */,
+				44DCDF8119F7A553001CE20D /* Left */,
+				44DCDF8519F7A972001CE20D /* Right */,
 				4480DA8819EF603200F53583 /* HomePage */,
 				4480DA8919EF604400F53583 /* Square */,
 				4480DA8A19EF608D00F53583 /* Personnal */,
-				4480DA8B19EF609800F53583 /* More */,
+				44DCDF9019F7C6D0001CE20D /* More */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -465,8 +478,8 @@
 		4480DA8819EF603200F53583 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
-				4480DA8C19EF60DE00F53583 /* HomeTableViewController.h */,
-				4480DA8D19EF60DE00F53583 /* HomeTableViewController.m */,
+				44DCDF9A19F7C7E3001CE20D /* HomeViewController.h */,
+				44DCDF9B19F7C7E3001CE20D /* HomeViewController.m */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -474,8 +487,8 @@
 		4480DA8919EF604400F53583 /* Square */ = {
 			isa = PBXGroup;
 			children = (
-				4480DA8F19EF610300F53583 /* SquareViewController.h */,
-				4480DA9019EF610300F53583 /* SquareViewController.m */,
+				44DCDF9D19F7C7F9001CE20D /* SquareViewController.h */,
+				44DCDF9E19F7C7F9001CE20D /* SquareViewController.m */,
 			);
 			name = Square;
 			sourceTree = "<group>";
@@ -483,19 +496,10 @@
 		4480DA8A19EF608D00F53583 /* Personnal */ = {
 			isa = PBXGroup;
 			children = (
-				4480DA9319EF612700F53583 /* PersonalTableViewController.h */,
-				4480DA9419EF612700F53583 /* PersonalTableViewController.m */,
+				44DCDFA019F7C80F001CE20D /* PersonalViewController.h */,
+				44DCDFA119F7C80F001CE20D /* PersonalViewController.m */,
 			);
 			name = Personnal;
-			sourceTree = "<group>";
-		};
-		4480DA8B19EF609800F53583 /* More */ = {
-			isa = PBXGroup;
-			children = (
-				4480DA9619EF613300F53583 /* MoreTableViewController.h */,
-				4480DA9719EF613300F53583 /* MoreTableViewController.m */,
-			);
-			name = More;
 			sourceTree = "<group>";
 		};
 		4480DAA119EF64C700F53583 /* Nav */ = {
@@ -512,6 +516,7 @@
 		449C041119F3D0FA009A883A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				44DCDF8919F7B643001CE20D /* Base */,
 				4459358619E64F780094D390 /* Nav */,
 				4480DA8419EF5DB100F53583 /* RootViewControlller */,
 				442D7AAB19C1DE74009AEEF7 /* TabBar */,
@@ -645,13 +650,42 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		44DCDF8119F7A553001CE20D /* left */ = {
+		44DCDF8119F7A553001CE20D /* Left */ = {
 			isa = PBXGroup;
 			children = (
-				44DCDF8219F7A56D001CE20D /* LeftViewController.h */,
-				44DCDF8319F7A56D001CE20D /* LeftViewController.m */,
+				44DCDFA319F7C845001CE20D /* LeftViewController.h */,
+				44DCDFA419F7C845001CE20D /* LeftViewController.m */,
 			);
-			name = left;
+			name = Left;
+			sourceTree = "<group>";
+		};
+		44DCDF8519F7A972001CE20D /* Right */ = {
+			isa = PBXGroup;
+			children = (
+				44DCDF9719F7C7B5001CE20D /* RightViewController.h */,
+				44DCDF9819F7C7B5001CE20D /* RightViewController.m */,
+			);
+			name = Right;
+			sourceTree = "<group>";
+		};
+		44DCDF8919F7B643001CE20D /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				44DCDF8A19F7B65F001CE20D /* BaseViewController.h */,
+				44DCDF8B19F7B65F001CE20D /* BaseViewController.m */,
+				44DCDF8D19F7BB54001CE20D /* BaseNavigationController.h */,
+				44DCDF8E19F7BB5C001CE20D /* BaseNavigationController.m */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		44DCDF9019F7C6D0001CE20D /* More */ = {
+			isa = PBXGroup;
+			children = (
+				44DCDF9419F7C70D001CE20D /* MoreViewController.h */,
+				44DCDF9519F7C70D001CE20D /* MoreViewController.m */,
+			);
+			name = More;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -731,6 +765,7 @@
 			files = (
 				44DCDF7819F762D0001CE20D /* blueArrow@2x.png in Resources */,
 				4480DA9C19EF64B900F53583 /* square.png in Resources */,
+				44DCDFA719F7D82D001CE20D /* me_head_default.png in Resources */,
 				442D7A7D19C1552A009AEEF7 /* InfoPlist.strings in Resources */,
 				4459358B19E6B4AB0094D390 /* tencent_login.png in Resources */,
 				442D7A8519C1552A009AEEF7 /* Images.xcassets in Resources */,
@@ -764,28 +799,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				44C30E6819D57FFE00E88059 /* ASIDownloadCache.m in Sources */,
-				4480DA9119EF610300F53583 /* SquareViewController.m in Sources */,
 				44C30E6619D57FFE00E88059 /* ASIDataCompressor.m in Sources */,
 				4459358019E5734F0094D390 /* SelectView.m in Sources */,
 				442D7A8319C1552A009AEEF7 /* AppDelegate.m in Sources */,
+				44DCDF9919F7C7B5001CE20D /* RightViewController.m in Sources */,
 				44DCDF5819F60485001CE20D /* SelectedWeiboName.m in Sources */,
-				4480DA9519EF612700F53583 /* PersonalTableViewController.m in Sources */,
+				44DCDF9619F7C70D001CE20D /* MoreViewController.m in Sources */,
 				447D22DE19C70F490076EA79 /* LogViewController.m in Sources */,
 				447D22E419C714ED0076EA79 /* BlockButton.m in Sources */,
-				44DCDF8419F7A56D001CE20D /* LeftViewController.m in Sources */,
 				4459359119E6C3790094D390 /* CustomNavController.m in Sources */,
 				442D7AAA19C1DC12009AEEF7 /* CustomTabBarViewController.m in Sources */,
-				4480DA9819EF613300F53583 /* MoreTableViewController.m in Sources */,
+				44DCDFA219F7C80F001CE20D /* PersonalViewController.m in Sources */,
 				4459357819E40EDD0094D390 /* PopView.m in Sources */,
+				44DCDF9F19F7C7F9001CE20D /* SquareViewController.m in Sources */,
 				44C30E6519D57FFE00E88059 /* ASIAuthenticationDialog.m in Sources */,
 				447D22D319C6E1B60076EA79 /* WeiboDataSource.m in Sources */,
 				44227A4D19C7216F0055C041 /* UIView+Addtion.m in Sources */,
 				447D22D019C6DED80076EA79 /* UIImageView+LoadView.m in Sources */,
 				447D22CA19C6DC040076EA79 /* SinaCell.m in Sources */,
+				44DCDF8C19F7B65F001CE20D /* BaseViewController.m in Sources */,
 				44DCDF7119F762D0001CE20D /* EGORefreshTableHeaderView.m in Sources */,
 				445935C719EE39660094D390 /* AuthorizeViewController.m in Sources */,
 				44C30E6919D57FFE00E88059 /* ASIFormDataRequest.m in Sources */,
 				44C30E6D19D57FFE00E88059 /* Reachability.m in Sources */,
+				44DCDFA519F7C845001CE20D /* LeftViewController.m in Sources */,
 				44DCDF7419F762D0001CE20D /* PullTableView.m in Sources */,
 				442D7A7F19C1552A009AEEF7 /* main.m in Sources */,
 				44C30E6719D57FFE00E88059 /* ASIDataDecompressor.m in Sources */,
@@ -793,12 +830,13 @@
 				4480DA8719EF5E5300F53583 /* RootViewController.m in Sources */,
 				44C30E6B19D57FFE00E88059 /* ASIInputStream.m in Sources */,
 				44DCDF7319F762D0001CE20D /* MessageInterceptor.m in Sources */,
+				44DCDF8F19F7BB5C001CE20D /* BaseNavigationController.m in Sources */,
 				44C30E6C19D57FFE00E88059 /* ASINetworkQueue.m in Sources */,
 				4480DAA419EFFC2300F53583 /* SplashViewController.m in Sources */,
-				4480DA8E19EF60DE00F53583 /* HomeTableViewController.m in Sources */,
 				44C30E6A19D57FFE00E88059 /* ASIHTTPRequest.m in Sources */,
 				447D22CD19C6DEA20076EA79 /* NSString+autoFit.m in Sources */,
 				44DCDF7219F762D0001CE20D /* LoadMoreTableFooterView.m in Sources */,
+				44DCDF9C19F7C7E3001CE20D /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,19 +25,6 @@
     return self;
 }
 
-//自定义导航上的标题
--(void)setTitle:(NSString *)title{
-    [super setTitle:title];
-    
-    UILabel *titleLable = [[UILabel alloc]init];
-    titleLable.font = [UIFont boldSystemFontOfSize:18.0f];
-    titleLable.backgroundColor = [UIColor clearColor];
-    titleLable.text = title;
-    titleLable.textColor = [UIColor whiteColor];
-    [titleLable sizeToFit];
-    self.navigationItem.titleView = titleLable;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

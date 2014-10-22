@@ -1,5 +1,5 @@
 //
-//  SquareViewController.h
+//  PersonalViewController.h
 //  微妮
 //
 //  Created by 刘锦 on 14/10/22.
@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 #import "SelectedWeiboName.h"
-@interface SquareViewController : BaseViewController
+@interface PersonalViewController : BaseViewController
 
 @end

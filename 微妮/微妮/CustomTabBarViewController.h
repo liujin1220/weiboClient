@@ -8,16 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomNavController.h"
-#import "HomeTableViewController.h"
+#import "HomeViewController.h"
 #import "SquareViewController.h"
-#import "PersonalTableViewController.h"
-#import "MoreTableViewController.h"
+#import "PersonalViewController.h"
+#import "MoreViewController.h"
 
 @interface CustomTabBarViewController : UITabBarController
-@property(nonatomic,strong)HomeTableViewController *homeVC;
+@property(nonatomic,strong) HomeViewController*homeVC;
 @property(nonatomic,strong)SquareViewController *squareVC;
-@property(nonatomic,strong)PersonalTableViewController *personalVC;
-@property(nonatomic,strong)MoreTableViewController *moreVC;
+@property(nonatomic,strong)PersonalViewController *personalVC;
+@property(nonatomic,strong)MoreViewController *moreVC;
 
 @property(nonatomic,strong)CustomNavController *homeNav;
 @property(nonatomic,strong)CustomNavController *squareNav;

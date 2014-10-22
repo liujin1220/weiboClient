@@ -7,10 +7,26 @@
 //
 
 #import "RootViewController.h"
-
+#import "CustomTabBarViewController.h"
+#import "LeftViewController.h"
+#import "RightViewController.h"
 static RootViewController *segtonInstance = nil;
 
 @implementation RootViewController
+-(id)init{
+    self = [super init];
+    if (self != nil) {
+        //初始化
+        LeftViewController *leftVC = [[LeftViewController alloc]init];
+        RightViewController *rightVC = [[RightViewController alloc]init];
+        _ddMenu= [[DDMenuController alloc]init];
+        CustomTabBarViewController *tab = [[CustomTabBarViewController alloc]init];
+        _ddMenu.rootViewController = tab;
+        _ddMenu.leftViewController = leftVC;
+        _ddMenu.rightViewController = rightVC;
+    }
+    return self;
+}
 +(RootViewController *)sharedRootViewController{
     @synchronized(self){
         if (segtonInstance == nil) {
