@@ -150,8 +150,12 @@
     //设置当前微博
     [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
     [SelectedWeiboName sharedWeiboName].weiboName = @"腾讯微博";
-    [SelectedWeiboName sharedWeiboName].token = wbobj.accessToken;
-    [SelectedWeiboName sharedWeiboName].uid = wbobj.openid;
+    //保存
+    NSUserDefaults *tencentData = [NSUserDefaults standardUserDefaults];
+    [tencentData setObject:wbobj.accessToken forKey:@"tencentToken"];
+    [tencentData setObject:wbobj.openid forKey:@"tencentUid"];
+    //同步到磁盘
+    [tencentData synchronize];
     //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
     dispatch_async(dispatch_get_main_queue(), ^{
         //进入下一级视图

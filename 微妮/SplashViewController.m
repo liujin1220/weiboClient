@@ -100,6 +100,7 @@
         }else{
             //进入主页面
             //设置当前微博
+            [SelectedWeiboName sharedWeiboName].weiboName = [[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:0];
             [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
             [self accessToHomePage];
         }

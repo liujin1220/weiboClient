@@ -14,7 +14,7 @@
 		<string>https://github.com/liujin1220/weiboClient.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>微妮/微妮.xcodeproj/project.xcworkspace</string>
+	<string>微妮/微妮.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>FA2D1FBBDDD527F7A07300A394BAF751525BB794</key>

@@ -100,8 +100,7 @@
     //设置当前微博
     [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"新浪微博"];
     [SelectedWeiboName sharedWeiboName].weiboName = @"新浪微博";
-    [SelectedWeiboName sharedWeiboName].token = [dic objectForKey:@"access_token"];
-    [SelectedWeiboName sharedWeiboName].uid = [dic objectForKey:@"sina_uid"];
+    
     //成功，进入下一级
     [self presentViewController:(UIViewController *)[RootViewController sharedRootViewController].ddMenu animated:YES completion:nil];
 }
