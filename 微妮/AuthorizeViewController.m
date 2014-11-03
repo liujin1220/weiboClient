@@ -94,15 +94,16 @@
     //保存
     NSUserDefaults *sinaData = [NSUserDefaults standardUserDefaults];
     [sinaData setObject:[dic objectForKey:@"access_token"] forKey:@"token"];
-    [sinaData setObject:[dic objectForKey:@"sina_uid"] forKey:@"uid"];
+    [sinaData setObject:[dic objectForKey:@"uid"] forKey:@"uid"];
     //同步到磁盘
     [sinaData synchronize];
     //设置当前微博
     [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"新浪微博"];
     [SelectedWeiboName sharedWeiboName].weiboName = @"新浪微博";
     
-    //成功，进入下一级
-    [self presentViewController:(UIViewController *)[RootViewController sharedRootViewController].ddMenu animated:YES completion:nil];
+    //成功
+    [self dismissViewControllerAnimated:YES completion:nil];
+    self.block();
 }
 - (void)requestFailed:(ASIHTTPRequest *)request{
     NSError *error = [request error];

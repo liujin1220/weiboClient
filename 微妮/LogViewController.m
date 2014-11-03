@@ -76,66 +76,27 @@
         self.txwbapi = [[WeiboApi alloc]initWithAppKey:KTAppKey andSecret:KTAppSecret andRedirectUri:REDIRECTURI andAuthModeFlag:0 andCachePolicy:0] ;
     }
 }
-
 //新浪认证
 -(void)LogSinaWeibo{
     AuthorizeViewController *authVC = [[AuthorizeViewController alloc]init];
     UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:authVC];
     [self presentViewController:navC animated:YES completion:nil];
+    authVC.block = ^(){
+        [self AccessToRootVC];
+    };
 }
 //腾讯认证
 -(void)LogTencentWeibo{
     [_txwbapi loginWithDelegate:self andRootController:self];
 }
+//进入主视图
+-(void)AccessToRootVC{
+     [self presentViewController:(UIViewController *)[RootViewController sharedRootViewController].ddMenu animated:YES completion:nil];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
-
-- (void)showMsg:(NSString *)msg
-{
-    //进入主页面
-//    MainTableViewController *manTabVC = [[MainTableViewController alloc]init];
-//    [self presentViewController:manTabVC animated:YES completion:nil];
-  
-    NSLog(@"showmessage--%@",msg);
-}
-#pragma mark WeiboRequestDelegate
-/**
- * @brief   接口调用成功后的回调
- * @param   INPUT   data    接口返回的数据
- * @param   INPUT   request 发起请求时的请求对象，可以用来管理异步请求
- * @return  无返回
- */
-- (void)didReceiveRawData:(NSData *)data reqNo:(int)reqno
-{
-//    NSString *strResult = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
-//    
-//    NSLog(@"result = %@",strResult);
-    
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //[self showMsg:strResult];
-    });
-    
-}
-/**
- * @brief   接口调用失败后的回调
- * @param   INPUT   error   接口返回的错误信息
- * @param   INPUT   request 发起请求时的请求对象，可以用来管理异步请求
- * @return  无返回
- */
-- (void)didFailWithError:(NSError *)error reqNo:(int)reqno
-{
-    NSString *str = [[NSString alloc] initWithFormat:@"refresh token error, errcode = %@",error.userInfo];
-    
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showMsg:str];
-    });
-}
-
-
 
 #pragma mark WeiboAuthDelegate
 /**
@@ -159,7 +120,7 @@
     //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
     dispatch_async(dispatch_get_main_queue(), ^{
         //进入下一级视图
-          [self presentViewController:(UIViewController *)[RootViewController sharedRootViewController].ddMenu animated:YES completion:nil];
+        [self AccessToRootVC];
     });
 }
 

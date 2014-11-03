@@ -65,8 +65,6 @@ typedef void (^selectedBlock) (NSString *);
     [_selectedButton addTarget:self action:@selector(changeWeiboList:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = _selectedButton;
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addUser:)];
-    
     self.pullTableView = [[PullTableView alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height - 64 - 44)];
     self.pullTableView.delegate = self;
     self.pullTableView.dataSource = self;
@@ -111,11 +109,7 @@ typedef void (^selectedBlock) (NSString *);
         [self performSelector:@selector(refreshTable) withObject:nil afterDelay:3.0f];
     }
 }
-//添加微博账号
--(void)addUser:(id)sender
-{
-    //
-}
+
 -(void)viewDidAppear:(BOOL)animated{
     [self loadWeiboData];
 }
@@ -123,8 +117,6 @@ typedef void (^selectedBlock) (NSString *);
 {
     [self setPullTableView:nil];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -140,6 +132,10 @@ typedef void (^selectedBlock) (NSString *);
     NSString *weiboName =[SelectedWeiboName sharedWeiboName].weiboName;
     if ([weiboName isEqualToString:@"新浪微博"]&&[userData objectForKey:@"token"]) {
         //新浪微博
+        //用户名称
+        NSString *userNameStr = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?@&access_token=%@&uid=%@",[userData objectForKey:@"token"],[userData objectForKey:@"sina_uid"]];
+        [self request:[NSURL URLWithString:userNameStr]];
+        //微博
         NSURL *sinaUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@?&source=%@&access_token=%@",[_listData objectForKey:_selectedName],KSAppKey,[userData objectForKey:@"token"]]];
         [self request:sinaUrl];
     }else if([weiboName isEqualToString:@"腾讯微博"]&&[userData objectForKey:@"tencentToken"]){
@@ -198,7 +194,7 @@ typedef void (^selectedBlock) (NSString *);
         
     });
 }
-#pragma mark - ASIHTTPRequestDelegate
+#pragma mark - ASIHTTPRequest
 -(void)request:(NSURL *)urlStr{
     //请求
     ASIHTTPRequest *requestForm = [[ASIHTTPRequest alloc]initWithURL:urlStr];
@@ -209,12 +205,18 @@ typedef void (^selectedBlock) (NSString *);
 }
 #pragma mark - ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request{
-    
-    //将json数据转化为字典
-    NSMutableDictionary *dic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
-    self.weiboData = [dic objectForKey:@"statuses"];
-    //刷新数据
-    [self.pullTableView reloadData];
+    if ([[request.url absoluteString] rangeOfString:@"https://api.weibo.com/2/users/show.json"].location != NSNotFound) {
+        //用户信息
+        NSMutableDictionary *userDic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];
+        NSString *userName=  [NSString stringWithFormat:@"%@",[userDic objectForKey:@"screen_name"]];
+        self.navigationItem.title = userName;
+    }else{
+        //将json数据转化为字典
+        NSMutableDictionary *dic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
+        self.weiboData = [dic objectForKey:@"statuses"];
+        //刷新数据
+        [self.pullTableView reloadData];
+    }
 }
 - (void)requestFailed:(ASIHTTPRequest *)request{
     NSError *error = [request error];
@@ -321,7 +323,7 @@ typedef void (^selectedBlock) (NSString *);
 #pragma mark - NSNotifiction actions
 //当切换主题时会调用
 -(void)weiboNotification:(NSNotification *)notification{
-    NSLog(@"home切换主题");
+    //NSLog(@"home切换主题");
     //请求数据
     [self loadWeiboData];
 }
@@ -358,8 +360,7 @@ typedef void (^selectedBlock) (NSString *);
 }
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //NSLog(@"didSelectRowAtIndexPath");
-  
+    
     //通知主视图刷新数据
     _block([_Weibolist objectAtIndex:indexPath.row]);
 }

@@ -76,6 +76,7 @@
 {
     [super didReceiveMemoryWarning];
 }
+
 #pragma mark - WeiboAuthDelegate
 /**
  * @brief   选择使用服务器验证token有效性（checkAuthValid）时，需实现此回调
@@ -101,7 +102,6 @@
             //进入主页面
             //设置当前微博
             [SelectedWeiboName sharedWeiboName].weiboName = [[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:0];
-            [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
             [self accessToHomePage];
         }
     });

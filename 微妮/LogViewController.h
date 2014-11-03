@@ -15,7 +15,7 @@
 
 @class SelectedWeiboName;
 @class BlockButton;
-@interface LogViewController : UIViewController<WeiboRequestDelegate,WeiboAuthDelegate>
+@interface LogViewController : UIViewController<WeiboAuthDelegate>
 @property (nonatomic , retain) WeiboApi                    *txwbapi;
 @property(strong,nonatomic)SelectView *selectView;
 @end
