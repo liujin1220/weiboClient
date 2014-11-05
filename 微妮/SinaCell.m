@@ -7,18 +7,29 @@
 //
 
 #import "SinaCell.h"
-/*
- UIView *souceView;//总容器
- UIImageView *photoImageView;//头像
- UILabel *userNameLabel;//用户昵称
- UILabel *timelabel;//时间
- UILabel *sourceLabel;//来源
- UITextView *textView;//内容
- UIView *picUrlsView;//缩略图
- UIView *retweetedView;//转发内容容器
- UITextView *retweetedTextView;//转发内容
- UIView *retweetedPicUrlsView;//转发内容缩略图
- */
+#import "RTLabel.h"
+@interface SinaCell ()
+@property (nonatomic, retain) UIView *souceView;//总容器
+
+@property (nonatomic, retain) UIImageView *photoImageView;//头像
+
+@property (nonatomic, retain) RTLabel *userNameLabel;//用户昵称
+
+@property (nonatomic, retain) RTLabel *timelabel;//时间
+
+@property (nonatomic, retain) RTLabel *sourceLabel;//来源
+
+@property(nonatomic,retain) RTLabel *mainBodyLabel;//正文内容
+
+@property (nonatomic, retain) UIView *picUrlsView;//正文缩略图
+
+@property (nonatomic, retain) UIView *retweetedView;//转发内容容器
+
+@property(nonatomic,retain)RTLabel *retweetedLabel;//转发内容
+
+@property (nonatomic, retain) UIView *retweetedPicUrlsView;//转发内容缩略图
+
+@end
 @implementation SinaCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -43,48 +54,44 @@
     //总容器
     _souceView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 310, 0)];
     _souceView.backgroundColor = [UIColor clearColor];
-    [self addSubview:_souceView];
+    [self.contentView addSubview:_souceView];
     
     //头像
     _photoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 40, 40)];
     [_souceView addSubview:_photoImageView];
     
     //用户昵称
-    _userNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(5+40+10, 5, 200, 20)];
+    _userNameLabel = [[RTLabel alloc]initWithFrame:CGRectMake(5+40+10, 5, 200, 20)];
     _userNameLabel.backgroundColor = [UIColor clearColor];
-    _userNameLabel.font = [UIFont fontWithName:@"Helvetica" size:15];
+    _userNameLabel.font = [UIFont systemFontOfSize:15.0];
     _userNameLabel.textColor = [UIColor blackColor];
     [_souceView addSubview:_userNameLabel];
     
     //时间
-    _timelabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 40+5, 300, 0)];
+    _timelabel = [[RTLabel alloc]initWithFrame:CGRectMake(5, 40+5, 300, 0)];
     _timelabel.backgroundColor = [UIColor clearColor];
     _timelabel.font = [UIFont systemFontOfSize:12];
     _timelabel.textColor = [UIColor orangeColor];
     [_souceView addSubview:_timelabel];
     
     //来源
-    _sourceLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 300, 10)];
+    _sourceLabel = [[RTLabel alloc]initWithFrame:CGRectMake(5, 0, 300, 10)];
     _sourceLabel.backgroundColor = [UIColor clearColor];
     _sourceLabel.font = [UIFont systemFontOfSize:12];
-    _sourceLabel.textColor = [UIColor blackColor];
+    _sourceLabel.textColor = [UIColor darkGrayColor];
     [_souceView addSubview:_sourceLabel];
     
     //正文内容
     //初始化
-	_textView = [[UITextView alloc]initWithFrame:CGRectMake(5, 40+10, 300, 300)];
+	_mainBodyLabel = [[RTLabel alloc]initWithFrame:CGRectMake(5, 40+10, 300, 300)];
     //设置字体名字和字体大小
-    _textView.font = [UIFont systemFontOfSize:15];
+    _mainBodyLabel.font = [UIFont systemFontOfSize:14.0];
     //设置字头颜色
-    _textView.textColor = [UIColor blackColor];
+    _mainBodyLabel.textColor = [UIColor blackColor];
     //设置背景
-    _textView.backgroundColor = [UIColor clearColor];
-    //是否可以拖动
-    _textView.scrollEnabled = NO;
-    //是否可编辑
-    _textView.editable = NO;
+    _mainBodyLabel.backgroundColor = [UIColor clearColor];
     //放到视图中
-    [_souceView addSubview:_textView];
+    [_souceView addSubview:_mainBodyLabel];
     
     
     //缩略图
@@ -98,16 +105,14 @@
     [_souceView addSubview:_retweetedView];
     
     //转发内容
-	_retweetedTextView = [[UITextView alloc]initWithFrame:CGRectMake(5, 5, 290, 0)];
-    _retweetedTextView.font = [UIFont systemFontOfSize:15];
-    _retweetedTextView.textColor = [UIColor blackColor];
-    _retweetedTextView.backgroundColor = [UIColor clearColor];
-    _retweetedTextView.scrollEnabled = NO;
-    _retweetedTextView.editable = NO;
-    [_retweetedView addSubview:_retweetedTextView];
+	_retweetedLabel = [[RTLabel alloc]initWithFrame:CGRectMake(5, 5, 300, 0)];
+    _retweetedLabel.font = [UIFont systemFontOfSize:14];
+    _retweetedLabel.textColor = [UIColor blackColor];
+    _retweetedLabel.backgroundColor = [UIColor clearColor];
+    [_retweetedView addSubview:_retweetedLabel];
     
     //转发内容缩略图
-    _retweetedPicUrlsView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, 290, 0)];
+    _retweetedPicUrlsView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, 300, 0)];
     _retweetedPicUrlsView.backgroundColor = [UIColor clearColor];
     [_retweetedView addSubview:_retweetedPicUrlsView];
 }
@@ -116,28 +121,28 @@
 {
     /*获取所需信息*/
     //头像
-    NSString *photoStr = [[dict objectForKey:@"user"] objectForKey:@"avatar_large"];
+    NSString *photoStr = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"user"] objectForKey:@"avatar_large"]];
     //昵称
-    NSString *userNameStr = [[dict objectForKey:@"user"] objectForKey:@"screen_name"];
+    NSString *userNameStr = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"user"] objectForKey:@"screen_name"]];
 
     //时间
-    NSString *timeStr = [dict objectForKey:@"created_at"];
-    timeStr = [SinaCell formatDaySinaTime:timeStr];
+    NSString *timeStr = [[NSString alloc]init];
+    timeStr = [SinaCell formatDaySinaTime:[dict objectForKey:@"created_at"]];
     //来源
-    NSString *sourceStr = [dict objectForKey:@"source"];
+    NSString *sourceStr = [NSString stringWithFormat:@"%@",[dict objectForKey:@"source"]];
     //例如<a href=\"http://app.weibo.com/t/feed/3G5oUM\" rel=\"nofollow\">iPhone 5s</a>
     sourceStr = [sourceStr stringByReplacingOccurrencesOfString:@"</a>" withString:@""];
     sourceStr = [sourceStr substringFromIndex:[sourceStr rangeOfString:@">"].location+1];
+    
     //正文
-    NSString *textStr = [dict objectForKey:@"text"];
+    NSString *textStr = [NSString stringWithFormat:@"%@",[dict objectForKey:@"text"]];
     //微博配图地址
-    NSArray *picUrlsArray = [dict objectForKey:@"pic_urls"];
+    NSArray *picUrlsArray = [NSArray arrayWithArray: [dict objectForKey:@"pic_urls"]];
     //被转发原微博的作者姓名+正文retweetedTextStr+配图地址retweetedPicUrlsArray
-    NSString *retweetedTextStr = nil;
-    NSArray *retweetedPicUrlsArray = nil;
+    NSString *retweetedTextStr = [[NSString alloc]init];
+    NSArray *retweetedPicUrlsArray = [NSArray array];
     if ([dict objectForKey:@"retweeted_status"]) {
-        retweetedTextStr = [NSString stringWithFormat:@"@%@:",[[[dict objectForKey:@"retweeted_status"] objectForKey:@"user"] objectForKey:@"screen_name"]];
-        retweetedTextStr = [retweetedTextStr stringByAppendingString:[[dict objectForKey:@"retweeted_status"] objectForKey:@"text"]];
+        retweetedTextStr = [NSString stringWithFormat:@"@%@:%@",[[[dict objectForKey:@"retweeted_status"] objectForKey:@"user"] objectForKey:@"screen_name"],[[dict objectForKey:@"retweeted_status"] objectForKey:@"text"]];
         retweetedPicUrlsArray = [[dict objectForKey:@"retweeted_status"] objectForKey:@"pic_urls"];
     }
     
@@ -147,80 +152,76 @@
     [_photoImageView setImageWithURL:[NSURL URLWithString:photoStr]];
     
     //昵称
-    CGSize uSize = [userNameStr sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByCharWrapping];
-    _userNameLabel.frame = CGRectMake(40+5+10, iTop, uSize.width, 20);
     _userNameLabel.text = userNameStr;
-    
+    CGSize uSize = _userNameLabel.optimumSize;
+    _userNameLabel.frame = CGRectMake(40+5+10, iTop+(20-uSize.height)/2, uSize.width, uSize.height);
+   
      iTop +=20;
     
     //时间
-    CGSize tSize = [timeStr sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByCharWrapping];
-    _timelabel.frame = CGRectMake(40+5+10, iTop, tSize.width, 20);
     _timelabel.text = timeStr;
+    CGSize tSize = _timelabel.optimumSize;
+    _timelabel.frame = CGRectMake(40+5+10, iTop+(20-tSize.height)/2, tSize.width, 20);
     
     //来源
-    CGSize sSize = [sourceStr sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByCharWrapping];
-    _sourceLabel.frame = CGRectMake(_timelabel.frame.origin.x + _timelabel.frame.size.width+5, iTop, sSize.width, 20);
-    _sourceLabel.text = sourceStr;
-    
-   iTop += 20 ;
+     _sourceLabel.text = sourceStr;
+    CGSize sSize = _sourceLabel.optimumSize;
+    _sourceLabel.frame = CGRectMake(_timelabel.frame.origin.x + _timelabel.optimumSize.width+10, iTop+(20-sSize.height)/2, sSize.width, 20);
+   
+   iTop += 30 ;
     
     //正文内容容器
-  iTop =  [self  addText:textStr andPicUrl:picUrlsArray withiTop:iTop withtextView:_textView  withPicView:_picUrlsView];
+    iTop =  [self  addText:textStr andPicUrl:picUrlsArray withiTop:iTop withtextView:_mainBodyLabel  withPicView:_picUrlsView];
     
-    //转发内容容器
-//    UIImage *image = [UIImage imageNamed:@"rect"];
-//    [image resizableImageWithCapInsets:UIEdgeInsetsMake(20, 10, 10, 10)];
-//    UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
     if (retweetedTextStr) {
         //如果有转发内容
-        int rH = [self  addText:retweetedTextStr andPicUrl:retweetedPicUrlsArray withiTop:0  withtextView:_retweetedTextView withPicView:_retweetedPicUrlsView];
+        iTop+=10;
+        int rH = [self  addText:retweetedTextStr andPicUrl:retweetedPicUrlsArray withiTop:0  withtextView:_retweetedLabel withPicView:_retweetedPicUrlsView];
         _retweetedView.frame = CGRectMake(5, iTop, 300, rH);
-        //imageView.frame = _retweetedTextView.frame;
-       // [_retweetedTextView addSubview:imageView];
         iTop += rH;
     }
-    
-    iTop += 10;
     _souceView.frame = CGRectMake(5, 5, 310, iTop);
 }    
 
 //内容和配图的高度
--(int)addText:(NSString *)textStr andPicUrl:(NSArray *)picUrlsArray withiTop:(int)iTop withtextView:(UITextView*)textView withPicView:(UIView*)picView{
+-(int)addText:(NSString *)textStr andPicUrl:(NSArray *)picUrlsArray withiTop:(int)iTop withtextView:(RTLabel*)mainBodyLabel withPicView:(UIView*)picView{
     
-    //内容
-    //自适应文字
-    [textView setText:textStr];
-    //CGFloat textViewHeight = textView.contentSize.height;
-    CGSize frame=  [textStr boundingRectWithSize:CGSizeMake(300, MAXFLOAT) withTextFont:[UIFont systemFontOfSize:15.0] withLineSpacing:7.0];
-    textView.frame = CGRectMake(5, iTop, 300, frame.height);
+    //文字
+    [mainBodyLabel setText:textStr];
+    CGSize frame = mainBodyLabel.optimumSize;
+    mainBodyLabel.frame = CGRectMake(5, iTop, 300, frame.height);
     
     iTop += frame.height;
     
     //缩略图
     int high = 0;
     int x = 0;
-    int num = (int)picUrlsArray.count/3;
-    int hightImage =(300-6)/3;
-    
-    if (picUrlsArray && picUrlsArray.count!=0) {
-        
-        for (UIView *subView in picView.subviews) {
-            //避免重用
-            [subView removeFromSuperview];
-        }
-             //算出高度
-        high=((num+1)*(hightImage+3));
-        if (picUrlsArray.count%3 == 0) {
-            high -=hightImage+3;
+    NSUInteger count = 0;//图片数
+    //判断配图数组是否为空
+    if ((NSNull *)picUrlsArray != [NSNull null]){
+        count = picUrlsArray.count;
+        int hightImage =(300-6)/3;//图片长、宽
+        int num  = (int)count/3;//图片数量
+        if (count) {
+            high+=10;
+            iTop+=10;
+            for (UIView *subView in picView.subviews) {
+                //避免重用
+                [subView removeFromSuperview];
+            }
+            //算出高度
+            high=((num+1)*(hightImage+3));
+            if (picUrlsArray.count%3 == 0) {
+                high -=hightImage+3;
+            }
         }
         picView.frame = CGRectMake(5, iTop, 300, high);
         
         iTop+=high;
         
         //将图片加在容器上
-        for (int i=0; i<picUrlsArray.count; i++) {
-            NSString *strUrl = [[picUrlsArray objectAtIndex:i]objectForKey:@"thumbnail_pic"];
+        for (int i=0; i<count; i++) {
+            NSString *strUrl = [NSString stringWithFormat:@"%@",[[picUrlsArray objectAtIndex:i]objectForKey:@"thumbnail_pic"]];
             UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(x, (i/3)*(hightImage+3), hightImage, hightImage)];
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
@@ -242,15 +243,19 @@
 //计算出高度
 +(int)heightWith:(NSMutableDictionary*)dict
 {
-    int iTop = 5;
+    int iTop = 10;
     iTop += 40;
     iTop += 10;
-    
-    iTop += [self heightText:[dict objectForKey:@"text"] withpicArray:[dict objectForKey:@"pic_urls"]];
+    //判断是否为空
+    if ((NSNull *)[dict objectForKey:@"pic_urls"] != [NSNull null]){
+        iTop += [self heightText:[dict objectForKey:@"text"] withpicArray:[dict objectForKey:@"pic_urls"]];
+    }
     
     if ([dict objectForKey:@"retweeted_status"]) {
         iTop += [self heightText:[[dict objectForKey:@"retweeted_status"] objectForKey:@"text"] withpicArray:[[dict objectForKey:@"retweeted_status"] objectForKey:@"pic_urls"]];
+        iTop+=10;
     }
+    iTop+=10;
     return iTop;
 }
 
@@ -258,21 +263,24 @@
 +(int)heightText:(NSString*)text withpicArray:(NSArray*)picArray
 {
     //内容
-    int height = 10;
-//    CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(200, CGFLOAT_MAX) lineBreakMode:NSLineBreakByCharWrapping];
-    
-    CGSize size = [text boundingRectWithSize:CGSizeMake(300, MAXFLOAT) withTextFont:[UIFont systemFontOfSize:15.0] withLineSpacing:7.0];
-    height = size.height + 10;
+    int height = 0;
+    RTLabel *testLabel = [[RTLabel alloc]initWithFrame:CGRectMake(0, 0, 300, 0)];
+    testLabel.text = text;
+    [testLabel setFont:[UIFont systemFontOfSize:14.0]];
+    CGSize size = testLabel.optimumSize;
+    height += size.height;
     //图片是否有
-    int num = picArray.count/3;
-    int hightImage =(300-6)/3;
-    if (picArray && picArray.count!=0) {
-        height +=((num+1)*(hightImage+3));
-        if (picArray.count%3 == 0) {
-            height -=hightImage+3;
+    if ((NSNull *)picArray != [NSNull null]){
+        if (picArray.count) {
+            height+=10;
+            int num = (int)picArray.count/3;
+            int hightImage =(300-6)/3;
+            height +=((num+1)*(hightImage+3));
+            if (picArray.count%3 == 0) {
+                height -=hightImage+3;
+            }
         }
     }
-    //NSLog(@"%d",height);
     return height;
 }
 
@@ -305,7 +313,7 @@
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     NSDateFormatter *formatter2 = [[NSDateFormatter alloc] init];
     formatter2.dateFormat = @"MM-dd HH:mm";
-    NSString *time =  [formatter2 stringFromDate:[formatter dateFromString:createAt]];
+    NSString *time =  [NSString stringWithFormat:@"%@",[formatter2 stringFromDate:[formatter dateFromString:createAt]]];
     return time;
 }
 

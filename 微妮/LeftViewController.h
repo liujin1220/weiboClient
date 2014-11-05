@@ -7,8 +7,8 @@
 //
 
 #import "BaseViewController.h"
-#import "UIImageView+LoadView.h"
 #import "WeiboApi.h"
+#import "UIImageView+WebCache.h"
 @class SelectedWeiboName;
 @class UserInfoData;
 @class AuthorizeViewController;

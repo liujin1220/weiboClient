@@ -125,7 +125,6 @@
     [cell setBackgroundColor:[UIColor clearColor]];
     [cell.textLabel setText:[[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:indexPath.row]];
     cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width/2;
-    [cell.imageView setImage:[UIImage imageNamed:@"me_head_default"]];
     if ([text isEqualToString:@"新浪微博"]) {
         
         NSString *url = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?access_token=%@&uid=%@",[userDefault objectForKey:@"token"],[userDefault objectForKey:@"uid"]];
@@ -133,7 +132,7 @@
         user_sina.block = ^(NSMutableDictionary *dic){
             cell.textLabel.text = [dic objectForKey:@"screen_name"];
             NSString *photoStr =[NSString stringWithFormat:@"%@",[dic objectForKey:@"profile_image_url"]];
-            [cell.imageView setImageWithURL:[NSURL URLWithString:photoStr]];
+            [cell.imageView setImageWithURL:[NSURL URLWithString:photoStr] placeholderImage:[UIImage imageNamed:@"me_head_default"]];
         };
     }else{
         NSMutableDictionary *params = [[NSMutableDictionary alloc]initWithObjectsAndKeys:@"json",@"format",
@@ -149,7 +148,7 @@
         user_tencent.block = ^(NSMutableDictionary *dic){
             cell.textLabel.text = [[dic objectForKey:@"data"]objectForKey:@"nick"];
             NSString *photoStr =[NSString stringWithFormat:@"%@/50",[[dic objectForKey:@"data"]objectForKey:@"head"]];
-            [cell.imageView setImageWithURL:[NSURL URLWithString:photoStr]];
+            [cell.imageView setImageWithURL:[NSURL URLWithString:photoStr] placeholderImage:[UIImage imageNamed:@"me_head_default"]];
         };
     }
     return cell;
