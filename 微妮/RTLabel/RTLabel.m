@@ -219,7 +219,7 @@
 	
 	CFMutableDictionaryRef styleDict = ( CFDictionaryCreateMutable( (0), 0, (0), (0) ) );
 	
-	[self applyParagraphStyleToText:attrString attributes:nil atPosition:0 withLength:CFAttributedStringGetLength(attrString)];
+	[self applyParagraphStyleToText:attrString attributes:nil atPosition:0 withLength:(int)CFAttributedStringGetLength(attrString)];
 	
 	
 	CTFontRef thisFont = CTFontCreateWithName ((__bridge CFStringRef)[self.font fontName], [self.font pointSize], NULL); 
@@ -232,22 +232,22 @@
     
 	for (RTLabelComponent *component in textComponents)
 	{
-		int index = [textComponents indexOfObject:component];
+		int index = (int)[textComponents indexOfObject:component];
 		component.componentIndex = index;
 		
 		if ([component.tagLabel caseInsensitiveCompare:@"i"] == NSOrderedSame)
 		{
 			// make font italic
-			[self applyItalicStyleToText:attrString atPosition:component.position withLength:[component.text length]];
+			[self applyItalicStyleToText:attrString atPosition:component.position withLength:(int)[component.text length]];
 		}
 		else if ([component.tagLabel caseInsensitiveCompare:@"b"] == NSOrderedSame)
 		{
 			// make font bold
-			[self applyBoldStyleToText:attrString atPosition:component.position withLength:[component.text length]];
+			[self applyBoldStyleToText:attrString atPosition:component.position withLength:(int)[component.text length]];
 		}
         else if ([component.tagLabel caseInsensitiveCompare:@"bi"] == NSOrderedSame)
         {
-            [self applyBoldItalicStyleToText:attrString atPosition:component.position withLength:[component.text length]];
+            [self applyBoldItalicStyleToText:attrString atPosition:component.position withLength:(int)[component.text length]];
         }
 		else if ([component.tagLabel caseInsensitiveCompare:@"a"] == NSOrderedSame)
 		{
@@ -255,24 +255,24 @@
 			{
 				if (self.selectedLinkAttributes)
 				{
-					[self applyFontAttributes:self.selectedLinkAttributes toText:attrString atPosition:component.position withLength:[component.text length]];
+					[self applyFontAttributes:self.selectedLinkAttributes toText:attrString atPosition:component.position withLength:(int)[component.text length]];
 				}
 				else
 				{
-					[self applyBoldStyleToText:attrString atPosition:component.position withLength:[component.text length]];
-					[self applyColor:@"#FF0000" toText:attrString atPosition:component.position withLength:[component.text length]];
+					[self applyBoldStyleToText:attrString atPosition:component.position withLength:(int)[component.text length]];
+					[self applyColor:@"#FF0000" toText:attrString atPosition:component.position withLength:(int)[component.text length]];
 				}
 			}
 			else
 			{
 				if (self.linkAttributes)
 				{
-					[self applyFontAttributes:self.linkAttributes toText:attrString atPosition:component.position withLength:[component.text length]];
+					[self applyFontAttributes:self.linkAttributes toText:attrString atPosition:component.position withLength:(int)[component.text length]];
 				}
 				else
 				{
-					[self applyBoldStyleToText:attrString atPosition:component.position withLength:[component.text length]];
-					[self applySingleUnderlineText:attrString atPosition:component.position withLength:[component.text length]];
+					[self applyBoldStyleToText:attrString atPosition:component.position withLength:(int)[component.text length]];
+					[self applySingleUnderlineText:attrString atPosition:component.position withLength:(int)[component.text length]];
 				}
 			}
 			

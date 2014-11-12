@@ -10,13 +10,14 @@
 #import "SelectedWeiboName.h"
 #import "UserInfoData.h"
 #import "AuthorizeViewController.h"
-
+#define kWeiboReLogin @"kWeiboReLogin"
 @interface LeftViewController ()
 {
     NSUserDefaults *userDefault;
     UserInfoData *user_sina;
     UserInfoData *user_tencent;
 }
+@property(nonatomic,strong)UITableView *tableView;
 @end
 
 @implementation LeftViewController
@@ -39,12 +40,6 @@
     [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [logOut addTarget:self action:@selector(logOutAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:logOut];
-    //腾讯微博初始化
-    if(self.txwbapi == nil)
-    {
-        self.txwbapi = [[WeiboApi alloc]initWithAppKey:KTAppKey andSecret:KTAppSecret andRedirectUri:REDIRECTURI andAuthModeFlag:0 andCachePolicy:0] ;
-    }
-    
     //加载数据
     user_sina = [[UserInfoData alloc]init];
     user_tencent = [[UserInfoData alloc]init];
@@ -61,44 +56,25 @@
 #pragma mark - User
 //添加账户
 -(void)addAction{
+    NSString *weiboName;
     if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
         //腾讯微博
-         [_txwbapi loginWithDelegate:self andRootController:self];
+        //[_txwbapi loginWithDelegate:self andRootController:self];
+        weiboName = @"腾讯微博";
     }else{
         //新浪微博
-        AuthorizeViewController *authVC = [[AuthorizeViewController alloc]init];
-        UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:authVC];
-        [self presentViewController:navC animated:YES completion:nil];
-        authVC.block = ^(){
-            //shuxin
-            [self addSuccess];
-        };
+        weiboName = @"新浪微博";
     }
-}
--(void)addSuccess{
-    NSLog(@"添加完成");
-    //刷新视图
-    [self.tableView reloadData];
-}
-//删除账户
--(void)logOutAction{
-    [self readUserDefault];
-    //退出
-    if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
-//        NSString *url = [NSString stringWithFormat:@"https://api.weibo.com/2/account/end_session.json?access_token=%@",[userDefault objectForKey:@"token"]];
-//        UserInfoData *user = [[UserInfoData alloc]init];
-//        [user getUserDataWithUrlStr:url];
-        [userDefault removeObjectForKey:@"token"];
-        [userDefault removeObjectForKey:@"uid"];
-    }else{
-        //
-        [self.txwbapi cancelAuth];
-    }
-    int i =  [self findIndexFromArray:[SelectedWeiboName sharedWeiboName].weiboArray WithString:[SelectedWeiboName sharedWeiboName].weiboName];
-    //删除
-    [[SelectedWeiboName sharedWeiboName].weiboArray removeObjectAtIndex:i];
-    //刷新视图
-    [self.tableView reloadData];
+    AuthorizeViewController *authVC = [[AuthorizeViewController alloc]initWithWeiboName:weiboName];
+    UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:authVC];
+    [self presentViewController:navC animated:YES completion:nil];
+    __weak typeof(self) weakSelf = self;
+    authVC.block = ^(){
+        //刷新
+        [weakSelf.tableView reloadData];
+        //发送通知
+        [[NSNotificationCenter defaultCenter]postNotificationName:kWeiboDidChangeNotification object:[SelectedWeiboName sharedWeiboName].weiboName];
+    };
 }
 -(int)findIndexFromArray:(NSMutableArray *)array WithString:(NSString *)string{
     int index = 0;
@@ -108,6 +84,38 @@
         }
     }
     return index;
+}
+//删除账户
+-(void)logOutAction{
+    [self readUserDefault];
+    //退出
+    if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
+        [userDefault removeObjectForKey:@"token"];
+        [userDefault removeObjectForKey:@"uid"];
+    }else{
+        [userDefault removeObjectForKey:@"tencent_token"];
+        [userDefault removeObjectForKey:@"openid"];
+        [userDefault removeObjectForKey:@"refresh_token"];
+    }
+    int i =  [self findIndexFromArray:[SelectedWeiboName sharedWeiboName].weiboArray WithString:[SelectedWeiboName sharedWeiboName].weiboName];
+    [[SelectedWeiboName sharedWeiboName].weiboArray removeObjectAtIndex:i];
+    [self loginInfomation];
+}
+
+//判断当前登陆情况
+-(void)loginInfomation{
+    if ([SelectedWeiboName sharedWeiboName].weiboArray == nil||[SelectedWeiboName sharedWeiboName].weiboArray.count == 0) {
+        //返回主页面
+        NSLog(@"返回主页面");
+        [[NSNotificationCenter defaultCenter]postNotificationName:kWeiboReLogin object:[SelectedWeiboName sharedWeiboName].weiboName];
+    }else{
+        //切换当前微博
+        [SelectedWeiboName sharedWeiboName].weiboName = [[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:0];
+        //刷新视图
+        [self.tableView reloadData];
+        //发送通知
+        [[NSNotificationCenter defaultCenter]postNotificationName:kWeiboDidChangeNotification object:[SelectedWeiboName sharedWeiboName].weiboName];
+    }
 }
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -126,7 +134,6 @@
     [cell.textLabel setText:[[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:indexPath.row]];
     cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width/2;
     if ([text isEqualToString:@"新浪微博"]) {
-        
         NSString *url = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?access_token=%@&uid=%@",[userDefault objectForKey:@"token"],[userDefault objectForKey:@"uid"]];
         [user_sina getUserDataWithUrlStr:url];
         user_sina.block = ^(NSMutableDictionary *dic){
@@ -135,20 +142,12 @@
             [cell.imageView setImageWithURL:[NSURL URLWithString:photoStr] placeholderImage:[UIImage imageNamed:@"me_head_default"]];
         };
     }else{
-        NSMutableDictionary *params = [[NSMutableDictionary alloc]initWithObjectsAndKeys:@"json",@"format",
-                                       KTAppKey,@"oauth_consumer_key",
-                                       [userDefault objectForKey:@"tencentToken"], @"access_token",
-                                       [userDefault objectForKey:@"tencentUid"], @"openid",
-                                       @"2.a", @"oauth_version",
-                                       @"0", @"type",
-                                       @"127.0.0.1", @"clientip",
-                                       @"all",@"scope", nil];
-        
-        [user_tencent getUserDataWithParams:params AndApi:@"user/info?"];
+        NSString *tencentUrl = [NSString stringWithFormat:@"http://open.t.qq.com/api/user/info?format=json&oauth_consumer_key=%@&access_token=%@&openid=%@&oauth_version=2.a&type=0&clientip=127.0.0.1&scope=all",KTAppKey,[userDefault objectForKey:@"tencent_token"],[userDefault objectForKey:@"openid"]];
+        [user_tencent getUserDataWithUrlStr:tencentUrl];
         user_tencent.block = ^(NSMutableDictionary *dic){
             cell.textLabel.text = [[dic objectForKey:@"data"]objectForKey:@"nick"];
-            NSString *photoStr =[NSString stringWithFormat:@"%@/50",[[dic objectForKey:@"data"]objectForKey:@"head"]];
-            [cell.imageView setImageWithURL:[NSURL URLWithString:photoStr] placeholderImage:[UIImage imageNamed:@"me_head_default"]];
+            NSString *tphotoStr =[NSString stringWithFormat:@"%@/50",[[dic objectForKey:@"data"]objectForKey:@"head"]];
+            [cell.imageView setImageWithURL:[NSURL URLWithString:tphotoStr] placeholderImage:[UIImage imageNamed:@"me_head_default"]];
         };
     }
     return cell;
@@ -189,44 +188,4 @@
     //发送通知
     [[NSNotificationCenter defaultCenter]postNotificationName:kWeiboDidChangeNotification object:selectedName];
 }
-#pragma mark WeiboAuthDelegate
-/**
- * @brief   授权成功后的回调
- * @param   INPUT   wbapi 成功后返回的WeiboApi对象，accesstoken,openid,refreshtoken,expires 等授权信息都在此处返回
- * @return  无返回
- */
-- (void)DidAuthFinished:(WeiboApiObject *)wbobj
-{
-    //NSString *str = [[NSString alloc]initWithFormat:@"accesstoken = %@\r\n openid = %@\r\n appkey=%@ \r\n appsecret=%@ \r\n refreshtoken=%@ ", wbobj.accessToken, wbobj.openid, wbobj.appKey, wbobj.appSecret, wbobj.refreshToken];
-    //NSLog(@"result = %@",str);
-    //设置当前微博
-    [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
-    [SelectedWeiboName sharedWeiboName].weiboName = @"腾讯微博";
-    //保存
-    NSUserDefaults *tencentData = [NSUserDefaults standardUserDefaults];
-    [tencentData setObject:wbobj.accessToken forKey:@"tencentToken"];
-    [tencentData setObject:wbobj.openid forKey:@"tencentUid"];
-    //同步到磁盘
-    [tencentData synchronize];
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //添加完成
-        [self addSuccess];
-    });
-}
-
-/**
- * @brief   授权成功后的回调
- * @param   INPUT   error   标准出错信息
- * @return  无返回
- */
-- (void)DidAuthFailWithError:(NSError *)error
-{
-    NSString *str = [[NSString alloc] initWithFormat:@"get token error, errcode = %@",error.userInfo];
-    NSLog(@"%@",str);
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-    });
-}
-
 @end

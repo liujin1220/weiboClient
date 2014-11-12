@@ -1,58 +1,47 @@
 //
-//  tencentCell.m
+//  weiboCell.m
 //  微妮
 //
-//  Created by 刘锦 on 14/10/28.
+//  Created by 刘锦 on 14/11/11.
 //  Copyright (c) 2014年 liujin. All rights reserved.
 //
 
-#import "tencentCell.h"
+#import "weiboCell.h"
 #import "RTLabel.h"
-@interface tencentCell ()
-@property (nonatomic, retain) UIView *souceView;//总容器
+#import "userModel.h"
 
-@property (nonatomic, retain) UIImageView *photoImageView;//头像
-
-@property (nonatomic, retain) RTLabel *userNameLabel;//用户昵称
-
-@property (nonatomic, retain) RTLabel *timelabel;//时间
-
-@property (nonatomic, retain) RTLabel *sourceLabel;//来源
-
-@property(nonatomic,retain) RTLabel *mainBodyLabel;//正文内容
-
-@property (nonatomic, retain) UIView *picUrlsView;//正文缩略图
-
-@property (nonatomic, retain) UIView *retweetedView;//转发内容容器
-
-@property(nonatomic,retain)RTLabel *retweetedLabel;//转发内容
-
-@property (nonatomic, retain) UIView *retweetedPicUrlsView;//转发内容缩略图
-
-@end
-
-@implementation tencentCell
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+@interface weiboCell(){
+    userModel *model;
+    NSString *weiboName;
 }
+@property (nonatomic, retain) UIView *souceView;//总容器
+@property (nonatomic, retain) UIImageView *photoImageView;//头像
+@property (nonatomic, retain) RTLabel *userNameLabel;//用户昵称
+@property (nonatomic, retain) RTLabel *timelabel;//时间
+@property (nonatomic, retain) RTLabel *sourceLabel;//来源
+@property(nonatomic,retain) RTLabel *mainBodyLabel;//正文内容
+@property (nonatomic, retain) UIView *picUrlsView;//正文缩略图
+@property (nonatomic, retain) UIView *retweetedView;//转发内容容器
+@property(nonatomic,retain)RTLabel *retweetedLabel;//转发内容
+@property (nonatomic, retain) UIView *retweetedPicUrlsView;//转发内容缩略图
+@end
+@implementation weiboCell
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
-        [self createView];
+        model = [[userModel alloc]init];
+        weiboName = [SelectedWeiboName sharedWeiboName].weiboName;
+        [self _initView];
     }
     return self;
 }
--(void)createView
-{
+//初始化子视图
+- (void)_initView{
     //总容器
     _souceView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 310, 0)];
     _souceView.backgroundColor = [UIColor clearColor];
-    [self.contentView addSubview:_souceView];
     
     //头像
     _photoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 40, 40)];
@@ -91,7 +80,6 @@
     //放到视图中
     [_souceView addSubview:_mainBodyLabel];
     
-    
     //缩略图
     _picUrlsView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, 300, 0)];
     _picUrlsView.backgroundColor = [UIColor clearColor];
@@ -113,82 +101,40 @@
     _retweetedPicUrlsView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, 300, 0)];
     _retweetedPicUrlsView.backgroundColor = [UIColor clearColor];
     [_retweetedView addSubview:_retweetedPicUrlsView];
-}
-/*
- * dict         info        nick：昵称
- *                              head：头像
- *                              timestamp：时间
- *                              from：来源
- *                              image：图片
- *                              text：正文
- *                              type：类型 1-原创发表，2-转载，3-私信，4-回复，5-空回，6-提及，7-评论,
- *                              source：原微博（包含上述字段）          nick
- *                                                                                                   head
- *                                                                                                     ...
- *                  user
- */
--(void)setContent:(NSMutableDictionary*)info
-{
-    /*获取所需信息*/
-    //头像
-    NSString *photoStr =[NSString stringWithFormat:@"%@/50",[info objectForKey:@"head"]] ;
-    //昵称
-    NSString *userNameStr = [NSString stringWithString:[info objectForKey:@"nick"]];
-    //时间
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)[info objectForKey:@"timestamp"] doubleValue]];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"MM-dd HH:mm";
-    NSString *timeStr =  [formatter stringFromDate:date];
-    //来源
-    NSString *sourceStr = [NSString stringWithString:[info objectForKey:@"from"]];
-    //正文
-    NSString *textStr = [NSString stringWithString:[info objectForKey:@"text"]];
-    //微博配图地址
-    NSArray *picUrlsArray =[NSArray array];
-    if ((NSNull *)[info objectForKey:@"image"] != [NSNull null]) {
-        picUrlsArray = [info objectForKey:@"image"];
-    }
-    //转发微博
-    //被转发原微博的作者姓名+正文retweetedTextStr+配图地址retweetedPicUrlsArray
-    NSString *retweetedTextStr = [NSString string];
-    NSArray *retweetedPicUrlsArray = [NSArray array];
-    if ([[info objectForKey:@"type"]isEqualToNumber:[NSNumber numberWithInt:2]]) {
-        //转载
-        NSMutableDictionary *source = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:@"source"]];
-        retweetedTextStr = [NSString stringWithFormat:@"@%@:",[source objectForKey:@"nick"]];
-        retweetedTextStr = [retweetedTextStr stringByAppendingString:[source objectForKey:@"text"]];
-        retweetedPicUrlsArray = [source objectForKey:@"image"];
-    }
     
+    [self.contentView addSubview:_souceView];
+}
+-(void)setContentData:(NSDictionary *)dict{
+    [model setContentData:dict WithWeiboName:weiboName];
     int iTop = 5;
     //头像
     _photoImageView.frame = CGRectMake(5, iTop, 40, 40);
-    [_photoImageView setImageWithURL:[NSURL URLWithString:photoStr]];
+    [_photoImageView setImageWithURL:[NSURL URLWithString:model.headImageUrl]];
     
     //昵称
-    _userNameLabel.text = userNameStr;
+    _userNameLabel.text = model.nick;
     CGSize uSize = _userNameLabel.optimumSize;
     _userNameLabel.frame = CGRectMake(40+5+10, iTop+1, uSize.width, uSize.height);
     
     //时间
-    _timelabel.text = timeStr;
+    _timelabel.text = model.time;
     CGSize tSize = _timelabel.optimumSize;
     _timelabel.frame = CGRectMake(40+5+10, iTop+40-tSize.height-1, tSize.width, 20);
     
     //来源
-    _sourceLabel.text = sourceStr;
+    _sourceLabel.text = model.source;
     CGSize sSize = _sourceLabel.optimumSize;
     _sourceLabel.frame = CGRectMake(_timelabel.frame.origin.x + _timelabel.optimumSize.width+10, iTop+40-sSize.height-1, sSize.width, 20);
     
     iTop += 50 ;
     
     //正文内容容器
-    iTop =  [self  addText:textStr andPicUrl:picUrlsArray withiTop:iTop withtextView:_mainBodyLabel  withPicView:_picUrlsView];
+    iTop =  [self  addText:model.mainBody andPicUrl:model.picUrls withiTop:iTop withtextView:_mainBodyLabel  withPicView:_picUrlsView];
     
-    if (retweetedTextStr) {
+    if (model.retweetedText) {
         //如果有转发内容
         iTop+=10;
-        int rH = [self  addText:retweetedTextStr andPicUrl:retweetedPicUrlsArray withiTop:0  withtextView:_retweetedLabel withPicView:_retweetedPicUrlsView];
+        int rH = [self  addText:model.retweetedText andPicUrl:model.retweetedPicUrls withiTop:0  withtextView:_retweetedLabel withPicView:_retweetedPicUrlsView];
         _retweetedView.frame = CGRectMake(5, iTop, 300, rH);
         iTop += rH;
     }
@@ -230,10 +176,15 @@
         picView.frame = CGRectMake(5, iTop, 300, high);
         
         iTop+=high;
-        
+
         //将图片加在容器上
         for (int i=0; i<count; i++) {
-            NSString *strUrl = [NSString stringWithFormat:@"%@/460",[picUrlsArray objectAtIndex:i]];
+            NSString *strUrl = [NSString string];
+            if ([weiboName isEqualToString:@"腾讯微博"]){
+              strUrl = [NSString stringWithFormat:@"%@/460",[picUrlsArray objectAtIndex:i]];
+            }else{
+               strUrl = [NSString stringWithFormat:@"%@",[[picUrlsArray objectAtIndex:i]objectForKey:@"thumbnail_pic"]];
+            }
             UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(x, (i/3)*(hightImage+3), hightImage, hightImage)];
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
@@ -251,10 +202,36 @@
     
     return iTop;
 }
-
-
-//计算出高度
-+(int)heightWith:(NSMutableDictionary*)info
+//计算微博cell的高度
++(int)heightWith:(NSMutableDictionary*)dict WithWeiboName:(NSString *)name{
+    int height;
+    if ([name isEqualToString:@"新浪微博"]) {
+        height = [weiboCell sinaHeightWith:dict];
+    }else{
+        height = [weiboCell tencentHeightWith:dict];
+    }
+    return height;
+}
+//计算出腾讯微博cell的高度
++(int)sinaHeightWith:(NSMutableDictionary*)dict
+{
+    int iTop = 10;
+    iTop += 40;
+    iTop += 10;
+    //判断是否为空
+    if ((NSNull *)[dict objectForKey:@"pic_urls"] != [NSNull null]){
+        iTop += [weiboCell heightText:[dict objectForKey:@"text"] withpicArray:[dict objectForKey:@"pic_urls"]];
+    }
+    
+    if ([dict objectForKey:@"retweeted_status"]) {
+        iTop += [weiboCell heightText:[[dict objectForKey:@"retweeted_status"] objectForKey:@"text"] withpicArray:[[dict objectForKey:@"retweeted_status"] objectForKey:@"pic_urls"]];
+        iTop+=10;
+    }
+    iTop+=10;
+    return iTop;
+}
+//计算出腾讯微博cell的高度
++(int)tencentHeightWith:(NSMutableDictionary*)info
 {
     int iTop = 10;
     iTop += 40;
@@ -264,9 +241,9 @@
     if ((NSNull *)[info objectForKey:@"image"] != [NSNull null]) {
         picArr = [info objectForKey:@"image"];
     }
-     iTop += [self heightText:[info objectForKey:@"text"] withpicArray:picArr];
+    iTop += [weiboCell heightText:[info objectForKey:@"text"] withpicArray:picArr];
     if ([[info objectForKey:@"type"]isEqualToNumber:[NSNumber numberWithInt:2]]) {
-        iTop += [self heightText:[[info objectForKey:@"source"] objectForKey:@"text"] withpicArray:[[info objectForKey:@"source"] objectForKey:@"image"]];
+        iTop += [weiboCell heightText:[[info objectForKey:@"source"] objectForKey:@"text"] withpicArray:[[info objectForKey:@"source"] objectForKey:@"image"]];
         iTop+=10;
     }
     iTop+=10;
@@ -297,6 +274,4 @@
     }
     return height;
 }
-
-
 @end

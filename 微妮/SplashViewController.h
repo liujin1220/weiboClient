@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WeiboApi.h"
 #import "ASIFormDataRequest.h"
+#import "ASIHTTPRequest.h"
 #import "CONSTS.h"
 
 @class RootViewController;
 @class LogViewController;
 @class SelectedWeiboName;
 
-@interface SplashViewController : UIViewController<WeiboAuthDelegate,ASIHTTPRequestDelegate>
-@property (nonatomic , strong) WeiboApi      *wbapi;
+@interface SplashViewController : UIViewController<ASIHTTPRequestDelegate>
+
 @end

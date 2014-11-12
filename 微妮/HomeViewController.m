@@ -9,17 +9,20 @@
 #import "HomeViewController.h"
 #import "SinaCell.h"
 #import "tencentCell.h"
-#import "WeiboApiObject.h"
+#import "UserInfoData.h"
+#import "weiboCell.h"
 
+//新浪微博
 #define kSinaPublicWeibo @"https://api.weibo.com/2/statuses/public_timeline.json"
 #define kSinaFriends @"https://api.weibo.com/2/statuses/public_timeline.json"
 #define kSinaUser @"https://api.weibo.com/2/statuses/user_timeline.json"
 #define kSinaAttention @"https://api.weibo.com/2/statuses/user_timeline.json"
 
-#define kTencentPublicWeibo @"statuses/public_timeline"
-#define kTencentFriends @"statuses/home_timeline"
-#define kTencentUser @"statuses/broadcast_timeline"
-#define kTencentAttention @"api/statuses/mentions_timeline "
+//腾讯微博
+#define kTencentPublicWeibo @"http://open.t.qq.com/api/statuses/public_timeline"
+#define kTencentFriends @"http://open.t.qq.com/api/statuses/home_timeline"
+#define kTencentUser @"http://open.t.qq.com/api/statuses/broadcast_timeline"
+#define kTencentAttention @"http://open.t.qq.com/api/api/statuses/mentions_timeline"
 
 @interface WeiboClassifyList : UITableView<UITableViewDataSource,UITableViewDelegate>
 //定义一个Block类型
@@ -28,13 +31,15 @@ typedef void (^selectedBlock) (NSString *);
 @property(nonatomic,strong)NSArray *Weibolist;
 @end
 
-@interface HomeViewController ()
-@property(nonatomic,strong)WeiboApi *txwb;
+@interface HomeViewController (){
+    UserInfoData *userInfoRequset;
+}
+@property(nonatomic,strong)PullTableView *pullTableView;
+@property(nonatomic,retain)NSMutableArray *weiboData;
 @property(nonatomic,strong)NSString *selectedName;
 @property(nonatomic,strong)NSDictionary *listData;
 @property(nonatomic,strong)NSDictionary *tlistData;
 @property(nonatomic,strong)WeiboClassifyList *weiboTable;
-@property(nonatomic,strong)NSMutableArray *txweiboData;
 @property(nonatomic,strong)UIButton *selectedButton;
 @end
 
@@ -42,7 +47,9 @@ typedef void (^selectedBlock) (NSString *);
 -(id)init{
     self = [super init];
     if (self) {
-        _txweiboData = [[NSMutableArray alloc]init];
+        //加载数据
+        userInfoRequset = [[UserInfoData alloc]init];
+//        _txweiboData = [[NSMutableArray alloc]init];
         _weiboData = [[NSMutableArray alloc]init];
         _listData = [NSDictionary dictionaryWithObjectsAndKeys:kSinaPublicWeibo,@"最新微博",kSinaFriends,@"朋友圈",kSinaUser,@"我的微博",kSinaAttention,@"我的关注", nil];
         _tlistData = [NSDictionary dictionaryWithObjectsAndKeys:kTencentPublicWeibo,@"最新微博",kTencentFriends,@"朋友圈",kTencentUser,@"我的微博",kTencentAttention,@"我的关注",nil];
@@ -52,10 +59,6 @@ typedef void (^selectedBlock) (NSString *);
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if(self.txwb == nil)
-    {
-        self.txwb = [[WeiboApi alloc]initWithAppKey:KTAppKey andSecret:KTAppSecret andRedirectUri:REDIRECTURI andAuthModeFlag:0 andCachePolicy:0] ;
-    }
     //nav
     [self setTitle:@"首页"];
     //导航
@@ -110,9 +113,6 @@ typedef void (^selectedBlock) (NSString *);
     }
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    [self loadWeiboData];
-}
 - (void)viewDidUnload
 {
     [self setPullTableView:nil];
@@ -124,106 +124,51 @@ typedef void (^selectedBlock) (NSString *);
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 #pragma mark - loadWeiboData
 -(void)loadWeiboData{
-    NSLog(@"selectedname = %@",_selectedName);
+    //NSLog(@"selectedname = %@",_selectedName);
     NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
     //获取到当前微博
     NSString *weiboName =[SelectedWeiboName sharedWeiboName].weiboName;
     if ([weiboName isEqualToString:@"新浪微博"]&&[userData objectForKey:@"token"]) {
         //新浪微博
-        //用户名称
-        NSString *userNameStr = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?@&access_token=%@&uid=%@",[userData objectForKey:@"token"],[userData objectForKey:@"sina_uid"]];
-        [self request:[NSURL URLWithString:userNameStr]];
-        //微博
-        NSURL *sinaUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@?&source=%@&access_token=%@",[_listData objectForKey:_selectedName],KSAppKey,[userData objectForKey:@"token"]]];
-        [self request:sinaUrl];
-    }else if([weiboName isEqualToString:@"腾讯微博"]&&[userData objectForKey:@"tencentToken"]){
+        NSString *sinaUrl = [NSString stringWithFormat:@"%@?&source=%@&access_token=%@",[_listData objectForKey:_selectedName],KSAppKey,[userData objectForKey:@"token"]];
+        //请求数据
+        [userInfoRequset getUserDataWithUrlStr:sinaUrl];
+        __weak typeof(self) weakSelf = self;
+        //回调数据处理
+        userInfoRequset.block = ^(NSMutableDictionary *dic){
+            weakSelf.weiboData = [dic objectForKey:@"statuses"];
+            //刷新数据
+            [weakSelf.pullTableView reloadData];
+        };
+    }else if([weiboName isEqualToString:@"腾讯微博"]&&[userData objectForKey:@"tencent_token"]){
         //腾讯微博
         //通用参数oauth_consumer_key&access_token&openid&clientip&oauth_version=2.a&scope=all
         //最新微博参数format=json&pos=0&reqnum=20
         //参数format=json&pageflag=0&pagetime=0&reqnum=20&lastid=0&type=0&contenttype=0
-        NSMutableDictionary *params = [[NSMutableDictionary alloc]initWithObjectsAndKeys:@"json",@"format",
-                                       KTAppKey,@"oauth_consumer_key",
-                                       [userData objectForKey:@"tencentToken"], @"access_token",
-                                       [userData objectForKey:@"tencentUid"], @"openid",
-                                       @"2.a", @"oauth_version",
-                                       @"0", @"type",
-                                       @"127.0.0.1", @"clientip",
-                                       @"all",@"scope",
-                                       [NSNumber numberWithInt:10],@"reqnum",
-                                       nil];
+        NSMutableString *tencentUrl = [NSMutableString stringWithFormat:@"%@?format=json&oauth_consumer_key=%@&access_token=%@&openid=%@&oauth_version=2.a&type=0&clientip=127.0.0.1&scope=all&reqnum=10",[_tlistData objectForKey:_selectedName],KTAppKey,[userData objectForKey:@"tencent_token"],[userData objectForKey:@"openid"]];
         if ([_selectedName isEqualToString:@"最新微博"]) {
-            [params setObject:[NSNumber numberWithInt:0] forKey:@"pos"];
+            [tencentUrl appendString:@"&pos=0"];
         }else{
-            [params setObject:[NSNumber numberWithInt:0] forKey:@"pageflag"];
-            [params setObject:[NSNumber numberWithInt:0] forKey:@"pagetime"];
-            [params setObject:[NSNumber numberWithInt:0] forKey:@"lastid"];
-            [params setObject:[NSNumber numberWithInt:0] forKey:@"type"];
-            [params setObject:[NSNumber numberWithInt:0] forKey:@"contenttype"];
+            [tencentUrl appendString:@"&pageflag=0&pagetime=0&lastid=0&type=0&contenttype=0"];
         }
-        NSString *apiNameStr = [NSString stringWithString:[_tlistData objectForKey:_selectedName]];
-        if ([_txwb requestWithParams:params apiName:apiNameStr httpMethod:@"GET" delegate:self]) {
-            //刷新视图
-            [self.pullTableView reloadData];
-        }
+        //请求数据
+        [userInfoRequset getUserDataWithUrlStr:tencentUrl];
+        //处理回调数据
+         __weak typeof(self) weakSelf = self;
+        userInfoRequset.block = ^(NSMutableDictionary *dic){
+            weakSelf.weiboData = [[dic objectForKey:@"data"]objectForKey:@"info"];
+            //刷新数据
+            [weakSelf.pullTableView reloadData];
+        };
     }
 }
 
-#pragma mark - WeiboRequestDelegate
-- (void)didReceiveRawData:(NSData *)data reqNo:(int)reqno{
-//    NSString *strResult = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
-//    NSLog(@"%@",strResult);
-    if (reqno) {
-        NSMutableDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-        self.txweiboData = [[dic objectForKey:@"data"]objectForKey:@"info"];
-         //NSLog(@"info = %@",dic);
-        //刷新视图
-        [self.pullTableView reloadData];
-    }
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-    });
-
-}
-- (void)didFailWithError:(NSError *)error reqNo:(int)reqno{
-    NSString *str = [[NSString alloc] initWithFormat:@"refresh token error, errcode = %@",error.userInfo];
-    NSLog(@"%@",str);
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-    });
-}
-#pragma mark - ASIHTTPRequest
--(void)request:(NSURL *)urlStr{
-    //请求
-    ASIHTTPRequest *requestForm = [[ASIHTTPRequest alloc]initWithURL:urlStr];
-    //设置代理
-    [requestForm setDelegate:self];
-    //开始异步请求
-    [requestForm startAsynchronous];
-}
-#pragma mark - ASIHTTPRequestDelegate
-- (void)requestFinished:(ASIHTTPRequest *)request{
-    if ([[request.url absoluteString] rangeOfString:@"https://api.weibo.com/2/users/show.json"].location != NSNotFound) {
-        //用户信息
-        NSMutableDictionary *userDic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];
-        NSString *userName=  [NSString stringWithFormat:@"%@",[userDic objectForKey:@"screen_name"]];
-        self.navigationItem.title = userName;
-    }else{
-        //将json数据转化为字典
-        NSMutableDictionary *dic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
-        self.weiboData = [dic objectForKey:@"statuses"];
-        //刷新数据
-        [self.pullTableView reloadData];
-    }
-}
-- (void)requestFailed:(ASIHTTPRequest *)request{
-    NSError *error = [request error];
-    NSString *str = [[NSString alloc] initWithFormat:@"get token error, errcode = %@",error.userInfo];
-    //输出错误信息
-    NSLog(@"%@",str);
-}
 #pragma mark - Refresh and load more methods
 //下拉刷新事件
 - (void) refreshTable
@@ -233,6 +178,8 @@ typedef void (^selectedBlock) (NSString *);
      Code to actually refresh goes here.
      
      */
+    [self loadWeiboData];
+    
     self.pullTableView.pullLastRefreshDate = [NSDate date];
     self.pullTableView.pullTableIsRefreshing = NO;
 }
@@ -257,50 +204,31 @@ typedef void (^selectedBlock) (NSString *);
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
-        return self.weiboData.count;
-    }else{
-        return self.txweiboData.count;
-    }
+    return self.weiboData.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
-         dict = [self.weiboData objectAtIndex:indexPath.row];
-        //行高
-        int iTop = [SinaCell heightWith:dict];
-        return iTop;
-    }else{
-        dict = [self.txweiboData objectAtIndex:indexPath.row];
-        //行高
-        int iTop = [tencentCell heightWith:dict];
-        return iTop;
-    }
+    dict = [self.weiboData objectAtIndex:indexPath.row];
+    //行高
+    int iTop = [weiboCell heightWith:dict WithWeiboName:[SelectedWeiboName sharedWeiboName].weiboName];
+    return iTop;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
-        dict = [self.weiboData objectAtIndex:indexPath.row];
-        SinaCell  *cell = [[SinaCell alloc]init];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell setContent:dict];
-        return cell;
-    }else{
-        dict = [self.txweiboData objectAtIndex:indexPath.row];
-        tencentCell  *cell = [[tencentCell alloc]init];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell setContent:dict];
-        return cell;
-    }
+    dict = [self.weiboData objectAtIndex:indexPath.row];
+    weiboCell *cell = [[weiboCell alloc]init];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell setContentData:dict];
+    return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //查看详情
+    NSLog(@"didSelectRowAtIndexPath----%ld",(long)indexPath.row);
 }
 
 #pragma mark - PullTableViewDelegate
@@ -315,15 +243,10 @@ typedef void (^selectedBlock) (NSString *);
     [self performSelector:@selector(loadMoreDataToTable) withObject:nil afterDelay:3.0f];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - NSNotifiction actions
 //当切换主题时会调用
 -(void)weiboNotification:(NSNotification *)notification{
-    //NSLog(@"home切换主题");
+    NSLog(@"home切换主题");
     //请求数据
     [self loadWeiboData];
 }
@@ -360,7 +283,6 @@ typedef void (^selectedBlock) (NSString *);
 }
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     //通知主视图刷新数据
     _block([_Weibolist objectAtIndex:indexPath.row]);
 }

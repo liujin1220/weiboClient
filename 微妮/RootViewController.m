@@ -10,12 +10,18 @@
 #import "CustomTabBarViewController.h"
 #import "LeftViewController.h"
 #import "RightViewController.h"
+#define kWeiboReLogin @"kWeiboReLogin"
 static RootViewController *segtonInstance = nil;
 
 @implementation RootViewController
 -(id)init{
     self = [super init];
     if (self != nil) {
+        //监听重新登录的通知
+        [ [NSNotificationCenter defaultCenter]addObserver:self
+                                                 selector:@selector(weiboLoginNotification:)
+                                                     name:kWeiboReLogin
+                                                   object:nil];
         //初始化
         LeftViewController *leftVC = [[LeftViewController alloc]init];
         RightViewController *rightVC = [[RightViewController alloc]init];
@@ -27,6 +33,7 @@ static RootViewController *segtonInstance = nil;
     }
     return self;
 }
+
 +(RootViewController *)sharedRootViewController{
     @synchronized(self){
         if (segtonInstance == nil) {
@@ -48,5 +55,9 @@ static RootViewController *segtonInstance = nil;
 - (id)copyWithZone:(NSZone *)zone{
     return segtonInstance;
 }
-
+#pragma mark - weiboLoginNotification
+-(void)weiboLoginNotification:(NSNotification *)notification{
+    NSLog(@"重新登录通知");
+    [self.ddMenu dismissViewControllerAnimated:YES completion:nil];
+}
 @end

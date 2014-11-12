@@ -11,9 +11,10 @@
 #import "RootViewController.h"
 #import "SelectedWeiboName.h"
 
+#define kWeiboReLogin @"kWeiboReLogin"
 #define kGETTOKENINFO @"https://api.weibo.com/oauth2/get_token_info"
-@interface SplashViewController ()
 
+@interface SplashViewController ()
 @end
 
 @implementation SplashViewController
@@ -22,7 +23,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -31,37 +31,26 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    if(self.wbapi == nil)
-    {
-        self.wbapi = [[WeiboApi alloc]initWithAppKey:KTAppKey andSecret:KTAppSecret andRedirectUri:REDIRECTURI andAuthModeFlag:0 andCachePolicy:0] ;
-    }
-    
+//    //监听重新登录的通知
+//    [ [NSNotificationCenter defaultCenter]addObserver:self
+//                                             selector:@selector(weiboLoginNotification:)
+//                                                 name:kWeiboReLogin
+//                                               object:nil];
     UILabel *welcome = [[UILabel alloc]initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 50)];
     [welcome setText:@"欢迎使用微妮"];
     [welcome setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:welcome];
 }
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
 - (void)viewDidAppear:(BOOL)animated{
     //检查新浪微博token有效性
     [self checkAuthValid];
 }
-
-//新浪微博token有效性判断
--(void)checkAuthValid{
-    NSUserDefaults *sinaData = [NSUserDefaults standardUserDefaults];
-    if ([[sinaData objectForKey:@"token"] length] != 0) {
-        //有账号，判断
-        NSURL *urlString = [NSURL URLWithString:kGETTOKENINFO];
-        ASIFormDataRequest *requestForm = [[ASIFormDataRequest alloc]initWithURL:urlString];
-        [requestForm setPostValue:[sinaData objectForKey:@"token"] forKey:@"access_token"];
-        [requestForm setDelegate:self];
-        [requestForm startAsynchronous];
-    }else{
-        //判断腾讯微博
-        [_wbapi checkAuthValid:TCWBAuthCheckServer andDelegete:self];
-    }
-}
+#pragma mark - accessAction
 //进入主页面
 -(void)accessToHomePage{
     [self presentViewController:(UIViewController *)[RootViewController sharedRootViewController].ddMenu animated:YES completion:nil];
@@ -72,53 +61,84 @@
     LogViewController *logVC = [[LogViewController alloc]init];
     [self presentViewController:logVC animated:YES completion:nil];
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+#pragma mark - check
+//新浪微博token有效性判断
+-(void)checkAuthValid{
+    NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
+    if ([[userData objectForKey:@"token"] length] != 0) {
+        //有账号，判断
+        NSURL *urlString = [NSURL URLWithString:kGETTOKENINFO];
+        ASIFormDataRequest *requestForm = [[ASIFormDataRequest alloc]initWithURL:urlString];
+        [requestForm setPostValue:[userData objectForKey:@"token"] forKey:@"access_token"];
+        [requestForm setDelegate:self];
+        [requestForm startAsynchronous];
+    }else{
+        //重刷腾讯微博
+        [self refreshTencentWeibo];
+    }
+}
+//重刷腾讯微博
+-(void)refreshTencentWeibo{
+    NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
+    if ([[userData objectForKey:@"refresh_token"] length] != 0) {
+        NSString *requestStr = [NSString stringWithFormat:@"https://open.t.qq.com/cgi-bin/oauth2/access_token?client_id=%@&grant_type=refresh_token&refresh_token=%@",KTAppKey,[userData objectForKey:@"refresh_token"]];
+        //请求
+        ASIHTTPRequest *requestForm = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:requestStr]];
+        //设置代理
+        [requestForm setDelegate:self];
+        //开始异步请求
+        [requestForm startAsynchronous];
+    }else{
+        //进入登录页面
+        [self accessToLoginView];
+    }
 }
 
-#pragma mark - WeiboAuthDelegate
-/**
- * @brief   选择使用服务器验证token有效性（checkAuthValid）时，需实现此回调
- * @param   INPUT   bResult   检查结果，yes 为有效，no 为无效
- * @param   INPUT   strSuggestion 当bResult 为no 时，此参数为建议。
- * @return  无返回
- */
--(void)didCheckAuthValid:(BOOL)bResult suggest:(NSString *)strSuggestion
-{
-    NSString *str = [[NSString alloc] initWithFormat:@"ret=%d, suggestion = %@", bResult, strSuggestion];
-    NSLog(@"腾讯微博授权有效性判断%@",str);
-    if (bResult) {
-        //加
-        [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
-    }
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //判断loginWeiboName是否为空
-        if ([[SelectedWeiboName sharedWeiboName].weiboArray count] == 0) {
-            //进入登陆页面
-            [self accessToLoginView];
-        }else{
-            //进入主页面
-            //设置当前微博
-            [SelectedWeiboName sharedWeiboName].weiboName = [[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:0];
-            [self accessToHomePage];
-        }
-    });
-}
 #pragma mark - ASIHTTPRequestDelegate
 - (void)requestFinished:(ASIHTTPRequest *)request{
-    //将json数据转化为字典
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
-    NSLog(@"%@",dic);
-    if ([dic objectForKey:@"expire_in"] >= 0) {
-        //有效
-        [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"新浪微博"];
+    NSString *str = [[NSString alloc] initWithData:[request responseData] encoding:NSUTF8StringEncoding];
+    if ([[request.url absoluteString]hasPrefix:kGETTOKENINFO]) {
+        //新浪微博
+        //将json数据转化为字典
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
+        if ([dic objectForKey:@"expire_in"] >= 0) {
+            //有效
+            [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"新浪微博"];
+        }
+//        else{
+//            //无效
+//            //[_wbapi checkAuthValid:TCWBAuthCheckServer andDelegete:self];
+//        }
+        //重刷腾讯微博
+        [self refreshTencentWeibo];
+    }else{
+        //腾讯微博
+        //获取access_token、refresh_token和openid
+        //找到" access_token= "的range
+        NSRange range_token = [str rangeOfString:@"access_token="];
+        NSString *token = [str substringWithRange:NSMakeRange(range_token.location+range_token.length, 32)];
+        
+        NSRange range_refresh = [str rangeOfString:@"refresh_token="];
+        NSString *refresh = [str substringWithRange:NSMakeRange(range_refresh.location+range_refresh.length, 32)];
+        
+        NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
+        [userData setObject:token forKey:@"tencent_token"];
+        [userData setObject:refresh forKey:@"refresh_token"];
+        //同步到磁盘
+        [userData synchronize];
+        
+        [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
+        //设置当前微博
+        [SelectedWeiboName sharedWeiboName].weiboName = [[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:0];
+        //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //进入主视图
+            [self accessToHomePage];
+        });
     }
-    //判断腾讯微博
-    [_wbapi checkAuthValid:TCWBAuthCheckServer andDelegete:self];
 }
 - (void)requestFailed:(ASIHTTPRequest *)request{
-    
+    //失败
 }
+
 @end

@@ -33,6 +33,8 @@
 		4459358B19E6B4AB0094D390 /* tencent_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 4459358A19E6B4AB0094D390 /* tencent_login.png */; };
 		4459359119E6C3790094D390 /* CustomNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4459359019E6C3790094D390 /* CustomNavController.m */; };
 		445935C719EE39660094D390 /* AuthorizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 445935C619EE39660094D390 /* AuthorizeViewController.m */; };
+		445C8BF01A12378100AF418C /* userModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 445C8BEF1A12378100AF418C /* userModel.m */; };
+		445C8BF31A12421200AF418C /* weiboCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 445C8BF21A12421200AF418C /* weiboCell.m */; };
 		447D22CA19C6DC040076EA79 /* SinaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22C919C6DC040076EA79 /* SinaCell.m */; };
 		447D22DE19C70F490076EA79 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22DD19C70F490076EA79 /* LogViewController.m */; };
 		447D22E419C714ED0076EA79 /* BlockButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 447D22E319C714ED0076EA79 /* BlockButton.m */; };
@@ -44,10 +46,8 @@
 		4480DAA019EF64C200F53583 /* more.png in Resources */ = {isa = PBXBuildFile; fileRef = 4480DA9F19EF64C200F53583 /* more.png */; };
 		4480DAA419EFFC2300F53583 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4480DAA319EFFC2300F53583 /* SplashViewController.m */; };
 		4483CE8A1A025DE100B2206D /* UserInfoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483CE891A025DE100B2206D /* UserInfoData.m */; };
-		4486F9261A08BCDF00EDAC10 /* WeiboView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4486F9251A08BCDF00EDAC10 /* WeiboView.m */; };
 		44A125F51A09EAC6003BDE67 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A125F41A09EAC6003BDE67 /* CoreText.framework */; };
 		44BB287F19FF5A47000A55B1 /* tencentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BB287E19FF5A47000A55B1 /* tencentCell.m */; };
-		44C30E1319D2F0B300E88059 /* libTCWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C30E1019D2F0B300E88059 /* libTCWeiboSDK.a */; };
 		44C30E1519D5634300E88059 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C30E1419D5634300E88059 /* Accounts.framework */; };
 		44C30E1719D5634F00E88059 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C30E1619D5634F00E88059 /* Security.framework */; };
 		44C30E1919D5635800E88059 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C30E1819D5635800E88059 /* Social.framework */; };
@@ -147,6 +147,10 @@
 		4459359019E6C3790094D390 /* CustomNavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavController.m; sourceTree = "<group>"; };
 		445935C519EE39660094D390 /* AuthorizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizeViewController.h; sourceTree = "<group>"; };
 		445935C619EE39660094D390 /* AuthorizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizeViewController.m; sourceTree = "<group>"; };
+		445C8BEE1A12378100AF418C /* userModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userModel.h; sourceTree = "<group>"; };
+		445C8BEF1A12378100AF418C /* userModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = userModel.m; sourceTree = "<group>"; };
+		445C8BF11A12421200AF418C /* weiboCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weiboCell.h; sourceTree = "<group>"; };
+		445C8BF21A12421200AF418C /* weiboCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = weiboCell.m; sourceTree = "<group>"; };
 		447D22C819C6DBFC0076EA79 /* SinaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaCell.h; sourceTree = "<group>"; };
 		447D22C919C6DC040076EA79 /* SinaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaCell.m; sourceTree = "<group>"; };
 		447D22DC19C70F490076EA79 /* LogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogViewController.h; sourceTree = "<group>"; };
@@ -165,14 +169,9 @@
 		4480DAA319EFFC2300F53583 /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 		4483CE881A025DE100B2206D /* UserInfoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoData.h; sourceTree = "<group>"; };
 		4483CE891A025DE100B2206D /* UserInfoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoData.m; sourceTree = "<group>"; };
-		4486F9241A08BCDF00EDAC10 /* WeiboView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboView.h; sourceTree = "<group>"; };
-		4486F9251A08BCDF00EDAC10 /* WeiboView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeiboView.m; sourceTree = "<group>"; };
 		44A125F41A09EAC6003BDE67 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		44BB287D19FF5A47000A55B1 /* tencentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tencentCell.h; sourceTree = "<group>"; };
 		44BB287E19FF5A47000A55B1 /* tencentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tencentCell.m; sourceTree = "<group>"; };
-		44C30E1019D2F0B300E88059 /* libTCWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTCWeiboSDK.a; sourceTree = "<group>"; };
-		44C30E1119D2F0B300E88059 /* WeiboApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboApi.h; sourceTree = "<group>"; };
-		44C30E1219D2F0B300E88059 /* WeiboApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboApiObject.h; sourceTree = "<group>"; };
 		44C30E1419D5634300E88059 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		44C30E1619D5634F00E88059 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		44C30E1819D5635800E88059 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -255,7 +254,6 @@
 				44C30E1919D5635800E88059 /* Social.framework in Frameworks */,
 				44C30E1719D5634F00E88059 /* Security.framework in Frameworks */,
 				44C30E1519D5634300E88059 /* Accounts.framework in Frameworks */,
-				44C30E1319D2F0B300E88059 /* libTCWeiboSDK.a in Frameworks */,
 				442D7A7719C1552A009AEEF7 /* UIKit.framework in Frameworks */,
 				442D7A7319C1552A009AEEF7 /* Foundation.framework in Frameworks */,
 			);
@@ -422,7 +420,6 @@
 		4459358519E64F5C0094D390 /* Commom */ = {
 			isa = PBXGroup;
 			children = (
-				44C30E0F19D2F0B300E88059 /* TCWeiboSDK */,
 				447D22E919C71F300076EA79 /* Category */,
 				44DCDF5519F60431001CE20D /* Model */,
 				449C041119F3D0FA009A883A /* Controller */,
@@ -471,8 +468,8 @@
 				447D22C919C6DC040076EA79 /* SinaCell.m */,
 				44BB287D19FF5A47000A55B1 /* tencentCell.h */,
 				44BB287E19FF5A47000A55B1 /* tencentCell.m */,
-				4486F9241A08BCDF00EDAC10 /* WeiboView.h */,
-				4486F9251A08BCDF00EDAC10 /* WeiboView.m */,
+				445C8BF11A12421200AF418C /* weiboCell.h */,
+				445C8BF21A12421200AF418C /* weiboCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -482,6 +479,8 @@
 			children = (
 				4483CE881A025DE100B2206D /* UserInfoData.h */,
 				4483CE891A025DE100B2206D /* UserInfoData.m */,
+				445C8BEE1A12378100AF418C /* userModel.h */,
+				445C8BEF1A12378100AF418C /* userModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -588,16 +587,6 @@
 				4459358819E6B4A70094D390 /* sina_login.png */,
 			);
 			name = Login;
-			sourceTree = "<group>";
-		};
-		44C30E0F19D2F0B300E88059 /* TCWeiboSDK */ = {
-			isa = PBXGroup;
-			children = (
-				44C30E1019D2F0B300E88059 /* libTCWeiboSDK.a */,
-				44C30E1119D2F0B300E88059 /* WeiboApi.h */,
-				44C30E1219D2F0B300E88059 /* WeiboApiObject.h */,
-			);
-			path = TCWeiboSDK;
 			sourceTree = "<group>";
 		};
 		44C30E1A19D56EE400E88059 /* Model */ = {
@@ -871,6 +860,7 @@
 				4459359119E6C3790094D390 /* CustomNavController.m in Sources */,
 				442D7AAA19C1DC12009AEEF7 /* CustomTabBarViewController.m in Sources */,
 				44DCDFA219F7C80F001CE20D /* PersonalViewController.m in Sources */,
+				445C8BF01A12378100AF418C /* userModel.m in Sources */,
 				444CEEB71A08D92A009D89D1 /* SDWebImageManager.m in Sources */,
 				4459357819E40EDD0094D390 /* PopView.m in Sources */,
 				44DCDF9F19F7C7F9001CE20D /* SquareViewController.m in Sources */,
@@ -900,8 +890,8 @@
 				44DCDF9C19F7C7E3001CE20D /* HomeViewController.m in Sources */,
 				444CEEB51A08D92A009D89D1 /* SDImageCache.m in Sources */,
 				444CEEB81A08D92A009D89D1 /* UIButton+WebCache.m in Sources */,
+				445C8BF31A12421200AF418C /* weiboCell.m in Sources */,
 				4483CE8A1A025DE100B2206D /* UserInfoData.m in Sources */,
-				4486F9261A08BCDF00EDAC10 /* WeiboView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

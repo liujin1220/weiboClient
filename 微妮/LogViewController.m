@@ -15,6 +15,7 @@
 #define KSELECTLABELHEIGHT 30
 
 @interface LogViewController ()
+@property(strong,nonatomic)SelectView *selectView;
 @property(strong,nonatomic)UILabel *loginLabel;
 @property(strong,nonatomic)UILabel *selectLabel;
 @property(strong,nonatomic)UIButton *sinaButton;
@@ -32,6 +33,11 @@
     }
     return self;
 }
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setContentView];
+}
 -(void)setContentView{
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KDEVICEWIDTH, KDEVICEHEIGHT*(2/6.0))];
     view.backgroundColor = [UIColor colorWithRed:226/255.0 green:101/255.0 blue:20/255.0 alpha:1.0];
@@ -39,7 +45,6 @@
     //登陆
     _loginLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, (1/7.0)*KDEVICEHEIGHT, KDEVICEWIDTH, KLOGINLABELHEIGHT)];
     [_loginLabel setText:@"微妮"];
-   // [_loginLabel setBackgroundColor:[UIColor grayColor]];
     [_loginLabel setFont:[UIFont systemFontOfSize:32.0]];
     [_loginLabel setTextAlignment:NSTextAlignmentCenter];
     [_loginLabel setTextColor:[UIColor whiteColor]];
@@ -67,18 +72,10 @@
     [_tencentButton addTarget:self action:@selector(LogTencentWeibo) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_tencentButton];
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self setContentView];
-    if(self.txwbapi == nil)
-    {
-        self.txwbapi = [[WeiboApi alloc]initWithAppKey:KTAppKey andSecret:KTAppSecret andRedirectUri:REDIRECTURI andAuthModeFlag:0 andCachePolicy:0] ;
-    }
-}
+#pragma mark - sina
 //新浪认证
 -(void)LogSinaWeibo{
-    AuthorizeViewController *authVC = [[AuthorizeViewController alloc]init];
+    AuthorizeViewController *authVC = [[AuthorizeViewController alloc]initWithWeiboName:@"新浪微博"];
     UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:authVC];
     [self presentViewController:navC animated:YES completion:nil];
     authVC.block = ^(){
@@ -87,7 +84,12 @@
 }
 //腾讯认证
 -(void)LogTencentWeibo{
-    [_txwbapi loginWithDelegate:self andRootController:self];
+    AuthorizeViewController *authVC = [[AuthorizeViewController alloc]initWithWeiboName:@"腾讯微博"];
+    UINavigationController *navC = [[UINavigationController alloc]initWithRootViewController:authVC];
+    [self presentViewController:navC animated:YES completion:nil];
+    authVC.block = ^(){
+        [self AccessToRootVC];
+    };
 }
 //进入主视图
 -(void)AccessToRootVC{
@@ -96,46 +98,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-#pragma mark WeiboAuthDelegate
-/**
- * @brief   授权成功后的回调
- * @param   INPUT   wbapi 成功后返回的WeiboApi对象，accesstoken,openid,refreshtoken,expires 等授权信息都在此处返回
- * @return  无返回
- */
-- (void)DidAuthFinished:(WeiboApiObject *)wbobj
-{
-    //NSString *str = [[NSString alloc]initWithFormat:@"accesstoken = %@\r\n openid = %@\r\n appkey=%@ \r\n appsecret=%@ \r\n refreshtoken=%@ ", wbobj.accessToken, wbobj.openid, wbobj.appKey, wbobj.appSecret, wbobj.refreshToken];
-    //NSLog(@"result = %@",str);
-    //设置当前微博
-    [[SelectedWeiboName sharedWeiboName].weiboArray addObject:@"腾讯微博"];
-    [SelectedWeiboName sharedWeiboName].weiboName = @"腾讯微博";
-    //保存
-    NSUserDefaults *tencentData = [NSUserDefaults standardUserDefaults];
-    [tencentData setObject:wbobj.accessToken forKey:@"tencentToken"];
-    [tencentData setObject:wbobj.openid forKey:@"tencentUid"];
-    //同步到磁盘
-    [tencentData synchronize];
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //进入下一级视图
-        [self AccessToRootVC];
-    });
-}
-
-/**
- * @brief   授权成功后的回调
- * @param   INPUT   error   标准出错信息
- * @return  无返回
- */
-- (void)DidAuthFailWithError:(NSError *)error
-{
-    NSString *str = [[NSString alloc] initWithFormat:@"get token error, errcode = %@",error.userInfo];
-    NSLog(@"%@",str);
-    //注意回到主线程，有些回调并不在主线程中，所以这里必须回到主线程
-    dispatch_async(dispatch_get_main_queue(), ^{
-    });
 }
 
 @end

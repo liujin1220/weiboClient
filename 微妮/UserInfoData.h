@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
-#import "WeiboApi.h"
 #import "CONSTS.h"
-@interface UserInfoData : NSObject<ASIHTTPRequestDelegate,WeiboRequestDelegate>
+@interface UserInfoData : NSObject<ASIHTTPRequestDelegate>
 typedef void (^dataLoadComplete) (NSMutableDictionary *);
 @property(nonatomic,strong)dataLoadComplete block;
 -(void)getUserDataWithUrlStr:(NSString *)url;

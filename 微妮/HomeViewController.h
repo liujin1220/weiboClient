@@ -11,11 +11,9 @@
 #import "PullTableView.h"
 #import "ASIHTTPRequest.h"
 #import "CONSTS.h"
-#import "WeiboApi.h"
-@class SinaCell;
-@class tencentCell;
-@interface HomeViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,PullTableViewDelegate,ASIHTTPRequestDelegate,WeiboRequestDelegate>
+@class weiboCell;
+@class UserInfoData;
 
-@property(nonatomic,strong)PullTableView *pullTableView;
-@property(nonatomic,retain)NSMutableArray *weiboData;
+@interface HomeViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,PullTableViewDelegate>
+
 @end

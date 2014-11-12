@@ -14,7 +14,8 @@
 @class SelectedWeiboName;
 @interface AuthorizeViewController : UIViewController<UIWebViewDelegate,ASIHTTPRequestDelegate>
 //定义一个Block类型
-typedef void (^sinaWeiboAuthorized)();
-@property(nonatomic,strong)UIWebView *mwebView;
-@property(nonatomic,strong)sinaWeiboAuthorized block;
+typedef void (^weiboAuthorized)();
+@property(nonatomic,strong)weiboAuthorized block;
+//初始化方法
+- (instancetype)initWithWeiboName:(NSString *)weiboName;
 @end

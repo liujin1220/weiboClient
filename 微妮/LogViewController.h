@@ -10,12 +10,11 @@
 #import "RootViewController.h"
 #import "SelectView.h"
 #import "CONSTS.h"
-#import "WeiboApi.h"
 #import "AuthorizeViewController.h"
 
 @class SelectedWeiboName;
 @class BlockButton;
-@interface LogViewController : UIViewController<WeiboAuthDelegate>
-@property (nonatomic , retain) WeiboApi                    *txwbapi;
-@property(strong,nonatomic)SelectView *selectView;
+
+@interface LogViewController : UIViewController
+
 @end

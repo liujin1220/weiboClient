@@ -154,21 +154,19 @@
     //昵称
     _userNameLabel.text = userNameStr;
     CGSize uSize = _userNameLabel.optimumSize;
-    _userNameLabel.frame = CGRectMake(40+5+10, iTop+(20-uSize.height)/2, uSize.width, uSize.height);
-   
-     iTop +=20;
+    _userNameLabel.frame = CGRectMake(40+5+10, iTop+1, uSize.width, uSize.height);
     
     //时间
     _timelabel.text = timeStr;
     CGSize tSize = _timelabel.optimumSize;
-    _timelabel.frame = CGRectMake(40+5+10, iTop+(20-tSize.height)/2, tSize.width, 20);
+    _timelabel.frame = CGRectMake(40+5+10, iTop+40-tSize.height - 1, tSize.width, 20);
     
     //来源
      _sourceLabel.text = sourceStr;
     CGSize sSize = _sourceLabel.optimumSize;
-    _sourceLabel.frame = CGRectMake(_timelabel.frame.origin.x + _timelabel.optimumSize.width+10, iTop+(20-sSize.height)/2, sSize.width, 20);
+    _sourceLabel.frame = CGRectMake(_timelabel.frame.origin.x + _timelabel.optimumSize.width+10, iTop+40-sSize.height - 1, sSize.width, 20);
    
-   iTop += 30 ;
+    iTop += 50 ;
     
     //正文内容容器
     iTop =  [self  addText:textStr andPicUrl:picUrlsArray withiTop:iTop withtextView:_mainBodyLabel  withPicView:_picUrlsView];

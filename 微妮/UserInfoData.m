@@ -9,7 +9,6 @@
 #import "UserInfoData.h"
 
 @interface UserInfoData()
-@property(nonatomic,strong)WeiboApi *txwb;
 @property(nonatomic,strong)NSString *userNick;
 @property(nonatomic,strong)NSString *userHead;
 @end
@@ -19,14 +18,6 @@
 -(void)getUserDataWithUrlStr:(NSString *)url{
      [self request:[NSURL URLWithString:url]];
 }
--(void)getUserDataWithParams:(NSMutableDictionary *)dic AndApi:(NSString *)api{
-    if(self.txwb == nil)
-    {
-        self.txwb = [[WeiboApi alloc]initWithAppKey:KTAppKey andSecret:KTAppSecret andRedirectUri:REDIRECTURI andAuthModeFlag:0 andCachePolicy:0] ;
-    }
-    [_txwb requestWithParams:dic apiName:api httpMethod:@"GET" delegate:self];
-}
-
 //新浪微博
 #pragma mark - ASIHTTPRequest
 -(void)request:(NSURL *)urlStr{

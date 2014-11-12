@@ -7,12 +7,14 @@
 //
 
 #import "BaseViewController.h"
-#import "WeiboApi.h"
 #import "UIImageView+WebCache.h"
+
 @class SelectedWeiboName;
 @class UserInfoData;
 @class AuthorizeViewController;
-@interface LeftViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,WeiboAuthDelegate>
-@property(nonatomic,strong)UITableView *tableView;
-@property (nonatomic , retain) WeiboApi                    *txwbapi;
+
+
+@interface LeftViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
 @end
+

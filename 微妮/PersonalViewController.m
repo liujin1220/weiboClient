@@ -28,7 +28,7 @@
 #pragma mark - NSNotifiction actions
 //当切换主题时会调用
 -(void)weiboNotification:(NSNotification *)notification{
-    NSLog(@"person切换主题");
+//    NSLog(@"person切换主题");
     //请求数据
 }
 
