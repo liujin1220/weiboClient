@@ -86,19 +86,19 @@
     [_souceView addSubview:_picUrlsView];
     
     //转发内容容器
-    _retweetedView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, 300, 0)];
+    _retweetedView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 0)];
     _retweetedView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:0.5];
     [_souceView addSubview:_retweetedView];
     
     //转发内容
-    _retweetedLabel = [[RTLabel alloc]initWithFrame:CGRectMake(5, 5, 300, 0)];
+    _retweetedLabel = [[RTLabel alloc]initWithFrame:CGRectMake(0, 5, 300, 0)];
     _retweetedLabel.font = [UIFont systemFontOfSize:14];
     _retweetedLabel.textColor = [UIColor blackColor];
     _retweetedLabel.backgroundColor = [UIColor clearColor];
     [_retweetedView addSubview:_retweetedLabel];
     
     //转发内容缩略图
-    _retweetedPicUrlsView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, 300, 0)];
+    _retweetedPicUrlsView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 0)];
     _retweetedPicUrlsView.backgroundColor = [UIColor clearColor];
     [_retweetedView addSubview:_retweetedPicUrlsView];
     
@@ -135,7 +135,7 @@
         //如果有转发内容
         iTop+=10;
         int rH = [self  addText:model.retweetedText andPicUrl:model.retweetedPicUrls withiTop:0  withtextView:_retweetedLabel withPicView:_retweetedPicUrlsView];
-        _retweetedView.frame = CGRectMake(5, iTop, 300, rH);
+        _retweetedView.frame = CGRectMake(0, iTop, 300, rH);
         iTop += rH;
     }
     _souceView.frame = CGRectMake(5, 5, 310, iTop);
@@ -173,6 +173,7 @@
                 high -=hightImage+3;
             }
         }
+#warning 图片左边距大小不一
         picView.frame = CGRectMake(5, iTop, 300, high);
         
         iTop+=high;
@@ -212,7 +213,7 @@
     }
     return height;
 }
-//计算出腾讯微博cell的高度
+//计算出新浪微博cell的高度
 +(int)sinaHeightWith:(NSMutableDictionary*)dict
 {
     int iTop = 10;
@@ -244,7 +245,7 @@
     iTop += [weiboCell heightText:[info objectForKey:@"text"] withpicArray:picArr];
     if ([[info objectForKey:@"type"]isEqualToNumber:[NSNumber numberWithInt:2]]) {
         iTop += [weiboCell heightText:[[info objectForKey:@"source"] objectForKey:@"text"] withpicArray:[[info objectForKey:@"source"] objectForKey:@"image"]];
-        iTop+=10;
+        iTop+=15;
     }
     iTop+=10;
     return iTop;

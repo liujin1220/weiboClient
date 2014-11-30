@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "CONSTS.h"
 #import "RootViewController.h"
-#import "ASIFormDataRequest.h"
+#import "AFHTTPRequestOperationManager.h"
 @class AuthorizeData;
 @class SelectedWeiboName;
-@interface AuthorizeViewController : UIViewController<UIWebViewDelegate,ASIHTTPRequestDelegate>
+@interface AuthorizeViewController : UIViewController<UIWebViewDelegate>
 //定义一个Block类型
 typedef void (^weiboAuthorized)();
 @property(nonatomic,strong)weiboAuthorized block;

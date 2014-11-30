@@ -7,14 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIFormDataRequest.h"
-#import "ASIHTTPRequest.h"
 #import "CONSTS.h"
-
+#import "AFHTTPRequestOperationManager.h"
 @class RootViewController;
 @class LogViewController;
 @class SelectedWeiboName;
 
-@interface SplashViewController : UIViewController<ASIHTTPRequestDelegate>
-
+@interface SplashViewController : UIViewController
 @end

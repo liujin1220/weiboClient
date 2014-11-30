@@ -70,8 +70,12 @@
     [self presentViewController:navC animated:YES completion:nil];
     __weak typeof(self) weakSelf = self;
     authVC.block = ^(){
-        //刷新
-        [weakSelf.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //更新UI操作
+            //.....
+            //刷新数据
+            [weakSelf.tableView reloadData];
+        });
         //发送通知
         [[NSNotificationCenter defaultCenter]postNotificationName:kWeiboDidChangeNotification object:[SelectedWeiboName sharedWeiboName].weiboName];
     };
@@ -111,8 +115,13 @@
     }else{
         //切换当前微博
         [SelectedWeiboName sharedWeiboName].weiboName = [[SelectedWeiboName sharedWeiboName].weiboArray objectAtIndex:0];
-        //刷新视图
-        [self.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //更新UI操作
+            //.....
+            //刷新视图
+            [self.tableView reloadData];
+        });
+
         //发送通知
         [[NSNotificationCenter defaultCenter]postNotificationName:kWeiboDidChangeNotification object:[SelectedWeiboName sharedWeiboName].weiboName];
     }

@@ -111,63 +111,53 @@
 #pragma mark - ASIFormDataRequest
 //新浪微博根据code请求到token----POST
 -(void)requestAccessToken:(NSString *)code{
-    //请求
-    NSURL *requestURL = [NSURL URLWithString:access_tokenURL];
-    ASIFormDataRequest *requestForm = [[ASIFormDataRequest alloc]initWithURL:requestURL];
-    //设置包体（参数）
-    [requestForm setPostValue:appKey forKey:@"client_id"];
-    [requestForm setPostValue:appSecret forKey:@"client_secret"];
-    [requestForm setPostValue:@"authorization_code" forKey:@"grant_type"];
-    [requestForm setPostValue:code forKey:@"code"];
-    [requestForm setPostValue:appRedirectURL forKey:@"redirect_uri"];
-    //设置代理
-    [requestForm setDelegate:self];
-    //开始异步请求
-    [requestForm startAsynchronous];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{@"client_id": appKey, @"client_secret" : appSecret , @"grant_type" : @"authorization_code", @"code" : code, @"redirect_uri" : appRedirectURL};
+    [manager POST:access_tokenURL parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //NSLog(@"JSON: %@", responseObject);
+        NSString *str = [[NSString alloc] initWithData:[responseObject responseData] encoding:NSUTF8StringEncoding];
+        NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
+        if ([_weiboName isEqualToString:@"新浪微博"]){
+            //新浪微博
+            NSString *requestTmp = [NSString stringWithString:operation.responseString];
+            NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
+            //将json数据转化为字典
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
+
+            NSLog(@"新浪微博%@",dic);
+            [userData setObject:[dic objectForKey:@"access_token"] forKey:@"token"];
+            [userData setObject:[dic objectForKey:@"uid"] forKey:@"uid"];
+        }else{
+            //腾讯微博
+            NSLog(@"tencnet---%@",str);
+            //获取access_token、refresh_token和openid
+            //找到" access_token= "的range
+            NSRange range_token = [str rangeOfString:@"access_token="];
+            NSString *token = [str substringWithRange:NSMakeRange(range_token.location+range_token.length, 32)];
+            
+            NSRange range_refresh = [str rangeOfString:@"refresh_token="];
+            NSString *refresh = [str substringWithRange:NSMakeRange(range_refresh.location+range_refresh.length, 32)];
+            
+            NSRange range_openid = [str rangeOfString:@"openid="];
+            NSString *openid = [str substringWithRange:NSMakeRange(range_openid.location+range_openid.length, 32)];
+            
+            [userData setObject:token forKey:@"tencent_token"];
+            [userData setObject:openid forKey:@"openid"];
+            [userData setObject:refresh forKey:@"refresh_token"];
+        }
+        //同步到磁盘
+        [userData synchronize];
+        //设置当前微博
+        [[SelectedWeiboName sharedWeiboName].weiboArray addObject:_weiboName];
+        [SelectedWeiboName sharedWeiboName].weiboName = _weiboName;
+        
+        //成功
+        [self dismissViewControllerAnimated:YES completion:nil];
+        self.block();
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
-#pragma mark - ASIHTTPRequestDelegate
-- (void)requestFinished:(ASIHTTPRequest *)request{
-    NSString *str = [[NSString alloc] initWithData:[request responseData] encoding:NSUTF8StringEncoding];
-    NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
-    if ([_weiboName isEqualToString:@"新浪微博"]){
-        //新浪微博
-        //将json数据转化为字典
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray）
-        [userData setObject:[dic objectForKey:@"access_token"] forKey:@"token"];
-        [userData setObject:[dic objectForKey:@"uid"] forKey:@"uid"];
-    }else{
-        //腾讯微博
-        NSLog(@"tencnet---%@",str);
-        //获取access_token、refresh_token和openid
-        //找到" access_token= "的range
-        NSRange range_token = [str rangeOfString:@"access_token="];
-        NSString *token = [str substringWithRange:NSMakeRange(range_token.location+range_token.length, 32)];
-        
-        NSRange range_refresh = [str rangeOfString:@"refresh_token="];
-        NSString *refresh = [str substringWithRange:NSMakeRange(range_refresh.location+range_refresh.length, 32)];
-        
-        NSRange range_openid = [str rangeOfString:@"openid="];
-        NSString *openid = [str substringWithRange:NSMakeRange(range_openid.location+range_openid.length, 32)];
-        
-        [userData setObject:token forKey:@"tencent_token"];
-        [userData setObject:openid forKey:@"openid"];
-        [userData setObject:refresh forKey:@"refresh_token"];
-    }
-    //同步到磁盘
-    [userData synchronize];
-    //设置当前微博
-    [[SelectedWeiboName sharedWeiboName].weiboArray addObject:_weiboName];
-    [SelectedWeiboName sharedWeiboName].weiboName = _weiboName;
-    
-    //成功
-    [self dismissViewControllerAnimated:YES completion:nil];
-    self.block();
-}
-- (void)requestFailed:(ASIHTTPRequest *)request{
-    NSError *error = [request error];
-    NSString *str = [[NSString alloc] initWithFormat:@"get token error, errcode = %@",error.userInfo];
-    //输出错误信息
-    NSLog(@"%@",str);
-}
 @end

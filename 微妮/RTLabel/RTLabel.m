@@ -287,30 +287,30 @@
 			// underline
 			if ([component.tagLabel caseInsensitiveCompare:@"u"] == NSOrderedSame)
 			{
-				[self applySingleUnderlineText:attrString atPosition:component.position withLength:[component.text length]];
+				[self applySingleUnderlineText:attrString atPosition:component.position withLength:(int)[component.text length]];
 			}
 			else if ([component.tagLabel caseInsensitiveCompare:@"uu"] == NSOrderedSame)
 			{
-				[self applyDoubleUnderlineText:attrString atPosition:component.position withLength:[component.text length]];
+				[self applyDoubleUnderlineText:attrString atPosition:component.position withLength:(int)[component.text length]];
 			}
 			
 			if ([component.attributes objectForKey:@"color"])
 			{
 				NSString *value = [component.attributes objectForKey:@"color"];
-				[self applyUnderlineColor:value toText:attrString atPosition:component.position withLength:[component.text length]];
+				[self applyUnderlineColor:value toText:attrString atPosition:component.position withLength:(int)[component.text length]];
 			}
 		}
 		else if ([component.tagLabel caseInsensitiveCompare:@"font"] == NSOrderedSame)
 		{
-			[self applyFontAttributes:component.attributes toText:attrString atPosition:component.position withLength:[component.text length]];
+			[self applyFontAttributes:component.attributes toText:attrString atPosition:component.position withLength:(int)[component.text length]];
 		}
 		else if ([component.tagLabel caseInsensitiveCompare:@"p"] == NSOrderedSame)
 		{
-			[self applyParagraphStyleToText:attrString attributes:component.attributes atPosition:component.position withLength:[component.text length]];
+			[self applyParagraphStyleToText:attrString attributes:component.attributes atPosition:component.position withLength:(int)[component.text length]];
 		}
 		else if ([component.tagLabel caseInsensitiveCompare:@"center"] == NSOrderedSame)
 		{
-			[self applyCenterStyleToText:attrString attributes:component.attributes atPosition:component.position withLength:[component.text length]];
+			[self applyCenterStyleToText:attrString attributes:component.attributes atPosition:component.position withLength:(int)[component.text length]];
 		}
 	}
     
@@ -995,7 +995,7 @@
 		if([valid_tags containsObject:tag] == NO)
 		{
 			NSString *delimiter = [NSString stringWithFormat:@"%@>", text];
-			int position = [data rangeOfString:delimiter].location;
+			NSUInteger position = [data rangeOfString:delimiter].location;
 			BOOL isEnd = [delimiter rangeOfString:@"</"].location!=NSNotFound;
 			if (position!=NSNotFound)
 			{
@@ -1012,7 +1012,7 @@
 				}
 				data = [data stringByReplacingOccurrencesOfString:delimiter withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(last_position, position+delimiter.length-last_position)];
 				
-				last_position = position;
+				last_position = (int)position;
 			}
 			else
 			{
