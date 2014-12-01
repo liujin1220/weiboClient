@@ -7,10 +7,10 @@
 //
 
 #import "BaseViewController.h"
-#import "PullTableView.h"
+#import "MJRefresh.h"
 @class weiboCell;
 @class UserInfoData;
 @class CommentCell;
-@interface DetailViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,PullTableViewDelegate>
+@interface DetailViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate>
 @property(nonatomic,strong)NSMutableDictionary *singelWeiboData;
 @end

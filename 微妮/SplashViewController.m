@@ -68,7 +68,7 @@
 //        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
         NSDictionary *parameters = @{@"access_token": [userData objectForKey:@"token"]};
         [manager POST:kGETTOKENINFO parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"JSON: %@", responseObject);
+            //NSLog(@"JSON: %@", responseObject);
             NSString *requestTmp = [NSString stringWithString:operation.responseString];
             NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
             //将json数据转化为字典

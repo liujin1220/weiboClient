@@ -20,6 +20,8 @@
 #pragma mark - ASIHTTPRequest
 -(void)request:(NSString *)urlStr{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //NSLog(@"JSON: %@", responseObject);
         //将json数据转化为字典
@@ -30,7 +32,8 @@
         dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];//NSJSONSerialization提供了将JSON数据转换为Foundation对象（一般都是NSDictionary和NSArray））
         _block(dic);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
+        NSLog(@"Errordata: %@", operation.responseString);
     }];
 }
 

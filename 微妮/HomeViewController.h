@@ -8,12 +8,12 @@
 
 #import "BaseViewController.h"
 #import "SelectedWeiboName.h"
-#import "PullTableView.h"
-#import "CONSTS.h"
+#import "MJRefresh.h"
+#import "CONSTS.h"   
 @class weiboCell;
 @class UserInfoData;
 @class DetailViewController;
 
-@interface HomeViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,PullTableViewDelegate>
+@interface HomeViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate>
 
 @end

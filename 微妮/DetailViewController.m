@@ -21,7 +21,7 @@
     NSInteger pagetime;//(0:第一页)填上一次请求返回的最后一条记录时间
     ino64_t rootid;
 }
-@property(nonatomic,strong)PullTableView *weiboDetailView;
+@property(nonatomic,strong)UITableView *weiboDetailView;
 @property(nonatomic)int64_t weiboID;
 @property(nonatomic)int64_t lastid; //最后一条微博评论的id
 @property(nonatomic)NSInteger lastTime;//最后一条微博的时间
@@ -46,16 +46,12 @@
 - (void)viewDidLoad {
     [self setTitle:@"微博正文"];
     [super viewDidLoad];
-    self.weiboDetailView = [[PullTableView alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height - 64 - 44) style:UITableViewStyleGrouped];
+    self.weiboDetailView = [[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.weiboDetailView.delegate = self;
     self.weiboDetailView.dataSource = self;
-    self.weiboDetailView.pullDelegate = self;
-    [self.weiboDetailView setSeparatorInset:UIEdgeInsetsMake(15,0,0,15)];
+    [self.weiboDetailView setSeparatorInset:UIEdgeInsetsMake(0,15,0,15)];
     [self.view addSubview:self.weiboDetailView];
-    self.weiboDetailView.pullArrowImage = [UIImage imageNamed:@"blackArrow"];
-    self.weiboDetailView.pullBackgroundColor = [UIColor whiteColor];
-    self.weiboDetailView.pullTextColor = [UIColor blackColor];
-    
+    [self setupRefresh];
     //初始化
     commentRequest = [[UserInfoData alloc]init];
     _weiboID = [[_singelWeiboData objectForKey:@"id"] longLongValue];
@@ -66,20 +62,20 @@
     }
     twitterid = 0;
 }
-- (void)viewWillAppear:(BOOL)animated
+
+/**
+ *  集成刷新控件
+ */
+- (void)setupRefresh
 {
-    [super viewWillAppear:animated];
-    if(!self.weiboDetailView.pullTableIsRefreshing) {
-        self.weiboDetailView.pullTableIsRefreshing = YES;
-        [self performSelector:@selector(refreshTable) withObject:nil afterDelay:3.0f];
-    }
+    [self headerRereshing];
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    [self.weiboDetailView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    
+    // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
+    [self.weiboDetailView addFooterWithTarget:self action:@selector(footerRereshing)];
 }
 
-- (void)viewDidUnload
-{
-    [self setWeiboDetailView:nil];
-    [super viewDidUnload];
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -108,6 +104,10 @@
                     //.....
                     //刷新数据
                     [weakSelf.weiboDetailView reloadData];
+                    if (!weakSelf.isLoadMore) {
+                        //滚动到首行
+                        [weakSelf.weiboDetailView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                    }
                 });
             }
         };
@@ -140,7 +140,7 @@
 }
 #pragma mark - Refresh and load more methods
 //下拉刷新事件
-- (void) refreshTable
+- (void) headerRereshing
 {
     /*
      
@@ -155,11 +155,10 @@
     twitterid = 0;
     
     [self loadComment];
-    self.weiboDetailView.pullLastRefreshDate = [NSDate date];
-    self.weiboDetailView.pullTableIsRefreshing = NO;
+    [self.weiboDetailView headerEndRefreshing];
 }
 //上拉加载更多
-- (void) loadMoreDataToTable
+- (void) footerRereshing
 {
     /*
      
@@ -174,18 +173,7 @@
     twitterid = _lastid;
     
     [self loadComment];
-    self.weiboDetailView.pullTableIsLoadingMore = NO;
-}
-#pragma mark - PullTableViewDelegate
-
-- (void)pullTableViewDidTriggerRefresh:(PullTableView *)pullTableView
-{
-    [self performSelector:@selector(refreshTable) withObject:nil afterDelay:3.0f];
-}
-
-- (void)pullTableViewDidTriggerLoadMore:(PullTableView *)pullTableView
-{
-    [self performSelector:@selector(loadMoreDataToTable) withObject:nil afterDelay:3.0f];
+    [self.weiboDetailView footerEndRefreshing];
 }
 #pragma mark - UITableViewDataSource
 

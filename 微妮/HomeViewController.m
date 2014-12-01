@@ -34,14 +34,13 @@ typedef void (^selectedBlock) (NSString *);
 
 @interface HomeViewController (){
     UserInfoData *userInfoRequset;
-    //sina
-    int page;
     //tencent
     int pageflag;//用于翻页（0：第一页，1：向下翻页，2：向上翻页）
     NSInteger pagetime;//(0:第一页)填上一次请求返回的最后一条记录时间
 }
 @property(nonatomic)BOOL isLoadMore;
-@property(nonatomic,strong)PullTableView *pullTableView;
+@property(nonatomic)int page;
+@property(nonatomic,strong)UITableView *tableView;
 @property(nonatomic,retain)NSMutableArray *weiboData;
 @property(nonatomic,strong)NSString *selectedName;
 @property(nonatomic,strong)NSDictionary *listData;
@@ -55,14 +54,13 @@ typedef void (^selectedBlock) (NSString *);
 -(id)init{
     self = [super init];
     if (self) {
-        page = 1;
+        _page = 1;
         _isLoadMore = NO;
         pageflag = 0;
         pagetime = 0;
         _lastTime = 0;
         //加载数据
         userInfoRequset = [[UserInfoData alloc]init];
-//        _txweiboData = [[NSMutableArray alloc]init];
         _weiboData = [[NSMutableArray alloc]init];
         _listData = [NSDictionary dictionaryWithObjectsAndKeys:kSinaPublicWeibo,@"最新微博",kSinaFriends,@"朋友圈",kSinaUser,@"我的微博",kSinaAttention,@"我的关注", nil];
         _tlistData = [NSDictionary dictionaryWithObjectsAndKeys:kTencentPublicWeibo,@"最新微博",kTencentFriends,@"朋友圈",kTencentUser,@"我的微博",kTencentAttention,@"我的关注",nil];
@@ -70,6 +68,7 @@ typedef void (^selectedBlock) (NSString *);
     }
     return self;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     //nav
@@ -81,15 +80,13 @@ typedef void (^selectedBlock) (NSString *);
     [_selectedButton addTarget:self action:@selector(changeWeiboList:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = _selectedButton;
     
-    self.pullTableView = [[PullTableView alloc]initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height - 64 - 44)];
-    self.pullTableView.delegate = self;
-    self.pullTableView.dataSource = self;
-    self.pullTableView.pullDelegate = self;
-    [self.pullTableView setSeparatorInset:UIEdgeInsetsMake(15,0,0,15)];
-    [self.view addSubview:self.pullTableView];
-    self.pullTableView.pullArrowImage = [UIImage imageNamed:@"blackArrow"];
-    self.pullTableView.pullBackgroundColor = [UIColor whiteColor];
-    self.pullTableView.pullTextColor = [UIColor blackColor];
+    self.tableView = [[UITableView alloc]initWithFrame:self.view.bounds];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,15,0,15)];
+    [self.view addSubview:self.tableView];
+     //集成刷新控件
+    [self setupRefresh];
     
     _weiboTable = [[WeiboClassifyList alloc]initWithFrame:CGRectMake(110, 64, 100, 120) style:UITableViewStylePlain];
     _weiboTable.Weibolist = [NSArray arrayWithObjects:@"最新微博",@"朋友圈",@"我的微博",@"我的关注", nil];
@@ -102,11 +99,26 @@ typedef void (^selectedBlock) (NSString *);
         NSLog(@"block%@",a);
         weakSelf.selectedName = a;
         //刷新视图
-        [weakSelf loadWeiboData];
+        [weakSelf headerRereshing];
     };
     [self.view addSubview:_weiboTable];
     [_weiboTable setHidden:YES];
 }
+/**
+ *  集成刷新控件
+ */
+- (void)setupRefresh
+{
+    //一进入就自动刷新程序
+    [self headerRereshing];
+    
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    [self.tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    
+    // 2.上拉加载更多(进入刷新状态就会调用self的footerRereshing)
+    [self.tableView addFooterWithTarget:self action:@selector(footerRereshing)];
+}
+
 //切换微博列表
 -(void)changeWeiboList:(UIButton *)button{
     if (_weiboTable.isHidden) {
@@ -116,21 +128,6 @@ typedef void (^selectedBlock) (NSString *);
         //隐藏
         [_weiboTable setHidden:YES];
     }
-}
-- (void)viewWillAppear:(BOOL)animated
-{
-    
-    [super viewWillAppear:animated];
-    if(!self.pullTableView.pullTableIsRefreshing) {
-        self.pullTableView.pullTableIsRefreshing = YES;
-        [self performSelector:@selector(refreshTable) withObject:nil afterDelay:3.0f];
-    }
-}
-
-- (void)viewDidUnload
-{
-    [self setPullTableView:nil];
-    [super viewDidUnload];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -150,7 +147,7 @@ typedef void (^selectedBlock) (NSString *);
     NSString *weiboName =[SelectedWeiboName sharedWeiboName].weiboName;
     if ([weiboName isEqualToString:@"新浪微博"]&&[userData objectForKey:@"token"]) {
         //新浪微博
-        NSString *sinaUrl = [NSString stringWithFormat:@"%@?&access_token=%@&page=%d&count=5",[_listData objectForKey:_selectedName],[userData objectForKey:@"token"],page];
+        NSString *sinaUrl = [NSString stringWithFormat:@"%@?&access_token=%@&page=%d&count=5",[_listData objectForKey:_selectedName],[userData objectForKey:@"token"],_page];
         //NSLog(@"sinaUrl=%@",sinaUrl);
         //请求数据
         [userInfoRequset getUserDataWithUrlStr:sinaUrl];
@@ -167,7 +164,11 @@ typedef void (^selectedBlock) (NSString *);
                 //更新UI操作
                 //.....
                 //刷新数据
-                [weakSelf.pullTableView reloadData];
+                [weakSelf.tableView reloadData];
+                if (!weakSelf.isLoadMore) {
+                    //滚动到首行
+                    [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                }
             });
         };
     }else if([weiboName isEqualToString:@"腾讯微博"]&&[userData objectForKey:@"tencent_token"]){
@@ -198,50 +199,60 @@ typedef void (^selectedBlock) (NSString *);
                     //更新UI操作
                     //.....
                     //刷新数据
-                    [weakSelf.pullTableView reloadData];
+                    [weakSelf.tableView reloadData];
                 });
             }
         };
     }
 }
-
-#pragma mark - Refresh and load more methods
-//下拉刷新事件
-- (void) refreshTable
+#pragma mark 开始进入刷新状态
+- (void)headerRereshing
 {
-    /*
-     
-     Code to actually refresh goes here.
-     
-     */
-    page = 1;
+    _page = 1;
     _isLoadMore = NO;
     pagetime = 0;
     pageflag = 0;
     
     [self loadWeiboData];
     
-    self.pullTableView.pullLastRefreshDate = [NSDate date];
-    self.pullTableView.pullTableIsRefreshing = NO;
-}
-//上拉加载更多
-- (void) loadMoreDataToTable
-{
-    /*
-     
-     Code to actually load more data goes here.
-     
-     */
+    [self.tableView headerEndRefreshing];
     
-    page--;
+//    // 2.2秒后刷新表格UI
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        // 刷新表格
+//        [self.tableView reloadData];
+//        
+//        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
+//        [self.tableView headerEndRefreshing];
+//    });
+}
+
+- (void)footerRereshing
+{
+    if ([self.selectedName isEqualToString:@"我的微博"]) {
+        _page++;
+    }else{
+        _page--;
+    }
+    
     _isLoadMore = YES;
     
     pagetime = _lastTime;
     pageflag = 1;
     
     [self loadWeiboData];
-    self.pullTableView.pullTableIsLoadingMore = NO;
+    [self.tableView footerEndRefreshing];
+    
+//    // 2.2秒后刷新表格UI
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        // 刷新表格
+//        [self.tableView reloadData];
+//        
+//        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
+//        [self.tableView footerEndRefreshing];
+//    });
 }
+
 
 #pragma mark - UITableViewDataSource
 
@@ -283,24 +294,12 @@ typedef void (^selectedBlock) (NSString *);
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
-#pragma mark - PullTableViewDelegate
-
-- (void)pullTableViewDidTriggerRefresh:(PullTableView *)pullTableView
-{
-    [self performSelector:@selector(refreshTable) withObject:nil afterDelay:3.0f];
-}
-
-- (void)pullTableViewDidTriggerLoadMore:(PullTableView *)pullTableView
-{
-    [self performSelector:@selector(loadMoreDataToTable) withObject:nil afterDelay:3.0f];
-}
-
 #pragma mark - NSNotifiction actions
 //当切换主题时会调用
 -(void)weiboNotification:(NSNotification *)notification{
     NSLog(@"home切换主题");
     //请求数据
-    [self loadWeiboData];
+    [self headerRereshing];
 }
 @end
 
