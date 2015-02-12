@@ -13,7 +13,7 @@
 @end
 
 @implementation BaseViewController
--(id)init{
+- (id)init{
     self = [super init];
     if (self) {
         //监听主题切换的通知
@@ -27,19 +27,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-//设置导航栏上的标题
+
+/**
+ *  设置导航栏上的标题
+ *
+ *  @param title 标题
+ */
 - (void)setTitle:(NSString *)title {
     [super setTitle:title];
-    
-    //    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    //    titleLabel.textColor = [UIColor blackColor];
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -50,6 +50,7 @@
 }
 
 #pragma mark - NSNotifiction actions
+
 //当切换主题时会调用
 -(void)weiboNotification:(NSNotification *)notification{
     NSLog(@"切换主题");

@@ -11,7 +11,6 @@
 #import "SelectView.h"
 #import "CONSTS.h"
 #import "AuthorizeViewController.h"
-
 @class SelectedWeiboName;
 @class BlockButton;
 

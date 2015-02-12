@@ -8,9 +8,12 @@
 
 #import "BaseViewController.h"
 #import "MJRefresh.h"
-@class weiboCell;
+@class WeiboCell;
 @class UserInfoData;
 @class CommentCell;
+
 @interface DetailViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate>
+
 @property(nonatomic,strong)NSMutableDictionary *singelWeiboData;
+
 @end

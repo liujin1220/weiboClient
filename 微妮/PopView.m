@@ -12,6 +12,7 @@
 #define KAppRedirectURL @"https://api.weibo.com/oauth2/default.html"
 
 @interface PopView ()
+
 @property(nonatomic,strong)UIButton *dismissButton;
 
 @end
@@ -41,10 +42,12 @@
     }
     return self;
 }
--(void)dismissAction{
+
+- (void)dismissAction{
     _block();
 }
--(void)layoutSubviews{
+
+- (void)layoutSubviews{
     [_dismissButton setFrame:CGRectMake(0, 0, 40, 40)];
     [_mwebView setFrame:CGRectMake(20, 20, self.bounds.size.width-40, self.bounds.size.height-40)];
 }
@@ -67,13 +70,5 @@
         [self.delegate SinaOAuthFinishedWithCode:code];
     }
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

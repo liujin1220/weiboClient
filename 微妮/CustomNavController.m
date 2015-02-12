@@ -33,13 +33,14 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
 
 #pragma setNavBgCategory
+
 @implementation UINavigationBar (SetBackground)
+
 //rect为navigationBar的大小
 //ios5.0之前
 -(void)drawRect:(CGRect)rect{

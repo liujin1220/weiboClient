@@ -8,38 +8,43 @@
 
 #import "DetailViewController.h"
 #import "UserInfoData.h"
-#import "weiboCell.h"
+#import "WeiboCell.h"
 #import "CommentCell.h"
 @interface DetailViewController (){
     UserInfoData *commentRequest;
-    //sina
-    int page;
+    // sina
+    int page;   // 页数
     
-    //tencent
-    ino64_t  twitterid;//最后一条微博评论的id,第一页填0
-    int pageflag;//用于翻页（0：第一页，1：向下翻页，2：向上翻页）
-    NSInteger pagetime;//(0:第一页)填上一次请求返回的最后一条记录时间
-    ino64_t rootid;
+    // tencent
+    ino64_t     twitterid;  //最后一条微博评论的id,第一页填0
+    int         pageflag;   //用于翻页（0：第一页，1：向下翻页，2：向上翻页）
+    NSInteger   pagetime;   //(0:第一页)填上一次请求返回的最后一条记录时间
+    ino64_t     rootid;     // 根id
 }
-@property(nonatomic,strong)UITableView *weiboDetailView;
-@property(nonatomic)int64_t weiboID;
-@property(nonatomic)int64_t lastid; //最后一条微博评论的id
-@property(nonatomic)NSInteger lastTime;//最后一条微博的时间
-@property(nonatomic,strong)NSMutableArray *commentArr;
-@property(nonatomic)BOOL isLoadMore;
+
+@property (nonatomic, strong) UITableView       *weiboDetailView;   // 详情视图
+@property (nonatomic, strong) NSMutableArray    *commentArr;        // 评论列表
+@property (nonatomic) int64_t   weiboID;    // 微博id
+@property (nonatomic) int64_t   lastid;     // 最后一条微博评论的id
+@property (nonatomic) NSInteger lastTime;   // 最后一条微博的时间
+@property (nonatomic) BOOL      isLoadMore; // 是否加载更多
+
 @end
 
 @implementation DetailViewController
+
+#pragma mark - LifeCircle
+
 -(id)init{
     self = [super init];
     if (self) {
-        _singelWeiboData = [NSMutableDictionary dictionary];
-        _commentArr = [NSMutableArray array];
-        _isLoadMore = NO;
+        _singelWeiboData    = [NSMutableDictionary dictionary];
+        _commentArr         = [NSMutableArray array];
+        _isLoadMore         = NO;
         page = 1;
         
         pagetime = 0;
-        pageflag =0;
+        pageflag = 0;
     }
     return self;
 }
@@ -52,12 +57,12 @@
     [self.weiboDetailView setSeparatorInset:UIEdgeInsetsMake(0,15,0,15)];
     [self.view addSubview:self.weiboDetailView];
     [self setupRefresh];
-    //初始化
+    // 初始化
     commentRequest = [[UserInfoData alloc]init];
     _weiboID = [[_singelWeiboData objectForKey:@"id"] longLongValue];
     rootid = _weiboID;
     if ([[_singelWeiboData objectForKey:@"type"]isEqualToNumber:[NSNumber numberWithInt:2]]) {
-        //转发的
+        // 转发的
         rootid = [[[_singelWeiboData objectForKey:@"source"]objectForKey:@"id"] longLongValue];
     }
     twitterid = 0;
@@ -78,49 +83,46 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
 #pragma mark - RequestData
-//请求数据
+/**
+ *  请求数据
+ */
 -(void)loadComment{
     NSUserDefaults *userData = [NSUserDefaults standardUserDefaults];
     NSString *requestStr;
     if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
         requestStr = [NSString stringWithFormat:@"https://api.weibo.com/2/comments/show.json?access_token=%@&id=%lld&since_id=0&count=3&page=%d",[userData objectForKey:@"token"],_weiboID,page];
         [commentRequest getUserDataWithUrlStr:requestStr];
-        //处理回调数据
+        // 处理回调数据
         __weak typeof(self) weakSelf = self;
-        commentRequest.block = ^(NSMutableDictionary *dic){
-            //NSLog(@"新浪微博评论列表%@",dic);
+        commentRequest.block = ^(NSMutableDictionary *dic) {
             if ([dic objectForKey:@"total_number"]) {
                 if (weakSelf.isLoadMore) {
-                    //拼接
+                    // 拼接
                     [weakSelf.commentArr addObjectsFromArray:[dic objectForKey:@"comments"]];
                 }else{
                     weakSelf.commentArr = [NSMutableArray arrayWithArray:[dic objectForKey:@"comments"]];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    //更新UI操作
-                    //.....
-                    //刷新数据
+                    // 刷新数据
                     [weakSelf.weiboDetailView reloadData];
                     if (!weakSelf.isLoadMore) {
-                        //滚动到首行
+                        // 滚动到首行
                         [weakSelf.weiboDetailView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
                     }
                 });
             }
         };
-    }else{
-        //
-        requestStr = [NSMutableString stringWithFormat:@"https://open.t.qq.com/api/t/re_list?format=json&oauth_consumer_key=%@&access_token=%@&openid=%@&oauth_version=2.a&type=0&clientip=127.0.0.1&scope=all&reqnum=2&flag=2&pageflag=%d&rootid=%lld&twitterid=%lld&pagetime=%ld",KTAppKey,[userData objectForKey:@"tencent_token"],[userData objectForKey:@"openid"],pageflag,rootid,twitterid,(long)pagetime];
+    }else {
+        requestStr = [NSMutableString stringWithFormat:@"https://open.t.qq.com/api/t/re_list?format=json&oauth_consumer_key=%@&access_token=%@&openid=%@&oauth_version=2.a&type=0&clientip=127.0.0.1&scope=all&reqnum=2&flag=2&pageflag=%d&rootid=%lld&twitterid=%lld&pagetime=%ld",kTAppKey,[userData objectForKey:@"tencent_token"],[userData objectForKey:@"openid"],pageflag,rootid,twitterid,(long)pagetime];
         [commentRequest getUserDataWithUrlStr:requestStr];//处理回调数据
         __weak typeof(self) weakSelf = self;
         commentRequest.block = ^(NSDictionary *dic){
-            //NSLog(@"腾讯微博评论列表%@",dic);
             if ((NSNull *)[dic objectForKey:@"data"] != [NSNull null] ) {
                 if (weakSelf.isLoadMore) {
-                    //拼接
+                    // 拼接
                     [weakSelf.commentArr addObjectsFromArray:[[dic objectForKey:@"data"]objectForKey:@"info"]];
                 }else{
                     weakSelf.commentArr = [NSMutableArray arrayWithArray:[[dic objectForKey:@"data"]objectForKey:@"info"]];
@@ -129,9 +131,7 @@
                 weakSelf.lastid = [[[weakSelf.commentArr lastObject]objectForKey:@"id"] doubleValue];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                //更新UI操作
-                //.....
-                //刷新数据
+                // 刷新数据
                 [weakSelf.weiboDetailView reloadData];
             });
         };
@@ -148,11 +148,11 @@
      
      */
     _isLoadMore = NO;
-    page = 1;
+    page        = 1;
     
-    pageflag = 1;
-    pagetime = 0;
-    twitterid = 0;
+    pageflag    = 1;
+    pagetime    = 0;
+    twitterid   = 0;
     
     [self loadComment];
     [self.weiboDetailView headerEndRefreshing];
@@ -168,9 +168,9 @@
     page++;
     _isLoadMore = YES;
     
-    pageflag = 1;
-    pagetime = _lastTime;
-    twitterid = _lastid;
+    pageflag    = 1;
+    pagetime    = _lastTime;
+    twitterid   = _lastid;
     
     [self loadComment];
     [self.weiboDetailView footerEndRefreshing];
@@ -179,7 +179,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 2;
 }
 
@@ -192,13 +191,13 @@
     return rows;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     int iTop = 44;
     if (indexPath.section == 0) {
-        //微博
-        iTop = [weiboCell heightWith:self.singelWeiboData WithWeiboName:[SelectedWeiboName sharedWeiboName].weiboName];
+        // 微博
+        iTop = [WeiboCell heightWith:self.singelWeiboData WithWeiboName:[SelectedWeiboName sharedWeiboName].weiboName];
     }else{
-        //评论
+        // 评论
         if ([self.commentArr count]) {
             iTop = [CommentCell heightWith:[_commentArr objectAtIndex:indexPath.row] WithWeiboName:[SelectedWeiboName sharedWeiboName].weiboName];
         }
@@ -209,18 +208,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        //微博
-        weiboCell *cell = [[weiboCell alloc]init];
+        // 微博
+        WeiboCell *cell = [[WeiboCell alloc]init];
         [cell setContentData:self.singelWeiboData];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
-    }else{
+    }else {
         if ([self.commentArr count]) {
             CommentCell *cell =  [[CommentCell alloc]init];
             [cell setContentData:[self.commentArr objectAtIndex:indexPath.row]];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
-        }else{
+        }else {
             UITableViewCell *cell = [[UITableViewCell alloc]init];
             cell.textLabel.text = @"该微博暂时没有评论%>_<%";
             cell.textLabel.textColor = [UIColor grayColor];
@@ -231,6 +230,7 @@
 }
 
 #pragma mark - UITableViewDelegate
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
 }
@@ -247,7 +247,7 @@
     return label;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //查看详情
+    // 查看详情
     NSLog(@"didSelectRowAtIndexPath----%ld",(long)indexPath.row);
 }
 

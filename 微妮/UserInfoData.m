@@ -9,9 +9,11 @@
 #import "UserInfoData.h"
 
 @interface UserInfoData()
+
 @end
 
 @implementation UserInfoData
+
 #pragma requset
 -(void)getUserDataWithUrlStr:(NSString *)url{
      [self request:url];

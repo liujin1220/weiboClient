@@ -10,8 +10,9 @@
 #define kWeiboDidChangeNotification @"kThemeDidChangeNotification"
 
 @interface SelectedWeiboName : NSObject<NSCopying>
-@property(nonatomic,strong)NSMutableArray *weiboArray;
-@property(nonatomic,strong)NSString *weiboName;
 
-+(SelectedWeiboName *)sharedWeiboName;
+@property (nonatomic, strong) NSMutableArray *weiboArray;
+@property (nonatomic, strong) NSString *weiboName;
+
++ (SelectedWeiboName *)sharedWeiboName;
 @end

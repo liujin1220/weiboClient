@@ -9,18 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "SelectedWeiboName.h"
 #import "UIImageView+WebCache.h"
-@class userModel;
-@interface weiboCell : UITableViewCell
+@class UserModel;
+
+@interface WeiboCell : UITableViewCell
+
 /*
  * @brief   填充数据
  * @param   INPUT   dict 微博数据
  * @return  无返回
  */
--(void)setContentData:(NSDictionary *)dict;
+- (void)setContentData:(NSDictionary *)dict;
+
 /*
  * @brief   计算高度
  * @param   INPUT   dict 微博数据,name 微博名称
  * @return  无返回
  */
-+(int)heightWith:(NSMutableDictionary*)dict WithWeiboName:(NSString *)name;
++ (int)heightWith:(NSMutableDictionary*)dict WithWeiboName:(NSString *)name;
 @end

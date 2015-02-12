@@ -11,10 +11,11 @@
 #import "LeftViewController.h"
 #import "RightViewController.h"
 #define kWeiboReLogin @"kWeiboReLogin"
+
 static RootViewController *segtonInstance = nil;
 
 @implementation RootViewController
--(id)init{
+- (id)init{
     self = [super init];
     if (self != nil) {
         //监听重新登录的通知
@@ -34,16 +35,15 @@ static RootViewController *segtonInstance = nil;
     return self;
 }
 
-+(RootViewController *)sharedRootViewController{
-    @synchronized(self){
-        if (segtonInstance == nil) {
-            segtonInstance = [[[self class]alloc]init];
-        }
-        return segtonInstance;
-    }
++ (RootViewController *)sharedRootViewController{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        segtonInstance = [[self alloc]init];
+    });
+    return segtonInstance;
 }
 #pragma mark - 下面的方法为了确保只有一个实例对象
-+ (id) allocWithZone:(NSZone *)zone{
++ (id)allocWithZone:(NSZone *)zone{
     @synchronized(self){
         if (segtonInstance == nil) {
             segtonInstance = [super allocWithZone:zone];
@@ -55,6 +55,7 @@ static RootViewController *segtonInstance = nil;
 - (id)copyWithZone:(NSZone *)zone{
     return segtonInstance;
 }
+
 #pragma mark - weiboLoginNotification
 -(void)weiboLoginNotification:(NSNotification *)notification{
     NSLog(@"重新登录通知");

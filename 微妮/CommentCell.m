@@ -11,18 +11,18 @@
 #import "RTLabel.h"
 
 @interface CommentCell(){
-    CommentModel *model;
+    CommentModel *_model; // 评论模型
 }
-@property (nonatomic, retain) UIView *souceView;//总容器
-@property (nonatomic, retain) UIButton *photoImageView;//头像
-@property (nonatomic, retain) RTLabel *userNameLabel;//用户昵称
-@property (nonatomic, retain) RTLabel *timelabel;//时间
-@property (nonatomic, retain) RTLabel *sourceLabel;//来源
-@property(nonatomic,retain) RTLabel *mainBodyLabel;//正文内容
+@property (nonatomic, retain) UIView    *souceView;         // 总容器
+@property (nonatomic, retain) UIButton  *photoImageView;    // 头像
+@property (nonatomic, retain) RTLabel   *userNameLabel;     // 用户昵称
+@property (nonatomic, retain) RTLabel   *timelabel;         // 时间
+@property (nonatomic, retain) RTLabel   *sourceLabel;       // 来源
+@property (nonatomic, retain) RTLabel   *mainBodyLabel;     // 正文内容
+
 @end
 
 @implementation CommentCell
-
 
 - (void)awakeFromNib {
     // Initialization code
@@ -30,19 +30,23 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
+
+#pragma mark - init
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        model = [[CommentModel alloc]init];
+        _model = [[CommentModel alloc]init];
         [self _initView];
     }
     return self;
 }
-//初始化子视图
+
+/**
+ *  初始化子视图
+ */
 - (void)_initView{
     //总容器
     _souceView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 310, 0)];
@@ -88,42 +92,61 @@
     
     [self.contentView addSubview:_souceView];
 }
--(void)setContentData:(NSDictionary *)dict{
-    [model setContentData:dict WithWeiboName:[SelectedWeiboName sharedWeiboName].weiboName];
+
+#pragma mark - Public
+
+/**
+ *  设置内容
+ *
+ *  @param dict 内容
+ */
+- (void)setContentData:(NSDictionary *)dict{
+    [_model setContentData:dict WithWeiboName:[SelectedWeiboName sharedWeiboName].weiboName];
     int iTop = 5;
     //头像
     _photoImageView.frame = CGRectMake(5, iTop, 40, 40);
-    [_photoImageView setImageWithURL:[NSURL URLWithString:model.headUrl]];
+    [_photoImageView setImageWithURL:[NSURL URLWithString:_model.headUrl]];
     
     //昵称
-    _userNameLabel.text = model.nick;
+    _userNameLabel.text = _model.nick;
     CGSize uSize = _userNameLabel.optimumSize;
     _userNameLabel.frame = CGRectMake(40+5+10, iTop+1, uSize.width, uSize.height);
     
     //时间
-    _timelabel.text = model.time;
+    _timelabel.text = _model.time;
     CGSize tSize = _timelabel.optimumSize;
     _timelabel.frame = CGRectMake(40+5+10, iTop+40-tSize.height-1, tSize.width, 20);
     
     //来源
-    _sourceLabel.text = model.source;
+    _sourceLabel.text = _model.source;
     CGSize sSize = _sourceLabel.optimumSize;
     _sourceLabel.frame = CGRectMake(_timelabel.frame.origin.x + tSize.width+10, iTop+40-tSize.height-1, sSize.width, 20);
     
     iTop += 50 ;
     
     //正文内容容器
-    _mainBodyLabel.text = model.mainText;
+    _mainBodyLabel.text = _model.mainText;
     CGSize mSize = _mainBodyLabel.optimumSize;
     _mainBodyLabel.frame = CGRectMake(50, iTop, mSize.width, mSize.height);
     
     _souceView.frame = CGRectMake(5, 5, 310, iTop);
 }
-+(int)heightWith:(NSMutableDictionary*)dict WithWeiboName:(NSString *)name{
+
+/**
+ *  根据内容计算cell高度
+ *
+ *  @param dict 内容
+ *  @param name 微博名称
+ *
+ *  @return 高度
+ */
+
++ (int)heightWith:(NSMutableDictionary*)dict WithWeiboName:(NSString *)name{
     int height = 0;
     RTLabel *mainTextLabel = [[RTLabel alloc]initWithFrame:CGRectMake(0, 0, 250, 0)];
     mainTextLabel.text = [dict objectForKey:@"text"];
     height = mainTextLabel.optimumSize.height;
     return height + 70;
 }
+
 @end

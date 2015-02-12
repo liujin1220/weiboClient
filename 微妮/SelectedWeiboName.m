@@ -12,25 +12,24 @@ static SelectedWeiboName *segtonInstance = nil;
 
 @implementation SelectedWeiboName
 
--(id)init{
+- (id)init{
     self = [super init];
     if (self != nil) {
         _weiboArray = [[NSMutableArray alloc]init];
     }
     return self;
 }
-+(SelectedWeiboName *)sharedWeiboName{
-    @synchronized(self){
-        if (segtonInstance == nil) {
-            segtonInstance = [[[self class]alloc]init];
-        }
-        return segtonInstance;
-    }
++ (SelectedWeiboName *)sharedWeiboName{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        segtonInstance = [[self alloc]init];
+    });
+    return segtonInstance;
 }
 
-+ (id) allocWithZone:(NSZone *)zone{
++ (id)allocWithZone:(NSZone *)zone{
     @synchronized(self){
-        if (segtonInstance == nil) {
+        if (nil == segtonInstance) {
             segtonInstance = [super allocWithZone:zone];
         }
     }
@@ -38,6 +37,7 @@ static SelectedWeiboName *segtonInstance = nil;
 }
 
 #pragma mark - NSCopying
+
 - (id)copyWithZone:(NSZone *)zone{
     return segtonInstance;
 }

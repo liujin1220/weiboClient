@@ -10,7 +10,7 @@
 #import "SelectedWeiboName.h"
 #import "MJRefresh.h"
 #import "CONSTS.h"   
-@class weiboCell;
+@class WeiboCell;
 @class UserInfoData;
 @class DetailViewController;
 

@@ -9,6 +9,7 @@
 #import "CommentModel.h"
 
 @implementation CommentModel
+
 -(void)setContentData:(NSDictionary *)dict WithWeiboName:(NSString *)name{
     if ([name isEqualToString:@"新浪微博"]) {
         //        created_at	string	评论创建时间
@@ -43,8 +44,9 @@
         _time =  [formatter stringFromDate:txdate];
     }
 }
+
 //美国时间，处理新浪
--(NSString*)formatDaySinaTime:(NSString*)createAt
+- (NSString*)formatDaySinaTime:(NSString*)createAt
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"EEE MMM d HH:mm:ss Z yyyy";
@@ -54,4 +56,5 @@
     NSString *time =  [NSString stringWithFormat:@"%@",[formatter2 stringFromDate:[formatter dateFromString:createAt]]];
     return time;
 }
+
 @end

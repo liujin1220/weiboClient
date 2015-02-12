@@ -14,18 +14,19 @@
 #import "MoreViewController.h"
 
 @interface CustomTabBarViewController : UITabBarController
-@property(nonatomic,strong) HomeViewController*homeVC;
-@property(nonatomic,strong)SquareViewController *squareVC;
-@property(nonatomic,strong)PersonalViewController *personalVC;
-@property(nonatomic,strong)MoreViewController *moreVC;
 
-@property(nonatomic,strong)CustomNavController *homeNav;
-@property(nonatomic,strong)CustomNavController *squareNav;
-@property(nonatomic,strong)CustomNavController *personalNav;
-@property(nonatomic,strong)CustomNavController *moreNav;
+@property (nonatomic, strong) HomeViewController        *homeVC;        // 首页
+@property (nonatomic, strong) SquareViewController      *squareVC;      // 广场
+@property (nonatomic, strong) PersonalViewController    *personalVC;    // 我
+@property (nonatomic, strong) MoreViewController        *moreVC;        // 更多
 
-@property(nonatomic,strong)UITabBarItem *homeItem;
-@property(nonatomic,strong)UITabBarItem *squareItem;
-@property(nonatomic,strong)UITabBarItem *personalItem;
-@property(nonatomic,strong)UITabBarItem *moreItem;
+@property (nonatomic, strong) CustomNavController *homeNav;
+@property (nonatomic, strong) CustomNavController *squareNav;
+@property (nonatomic, strong) CustomNavController *personalNav;
+@property (nonatomic, strong) CustomNavController *moreNav;
+
+@property (nonatomic, strong) UITabBarItem *homeItem;
+@property (nonatomic, strong) UITabBarItem *squareItem;
+@property (nonatomic, strong) UITabBarItem *personalItem;
+@property (nonatomic, strong) UITabBarItem *moreItem;
 @end

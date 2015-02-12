@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SelectedWeiboName.h"
+
 @interface BaseViewController : UIViewController
 
 @end

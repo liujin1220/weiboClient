@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 liujin. All rights reserved.
 //
 
-#import "userModel.h"
+#import "UserModel.h"
 
-@implementation userModel
+@implementation UserModel
 -(instancetype)init{
     self = [super init];
     if (self) {

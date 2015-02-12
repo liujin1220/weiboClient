@@ -13,7 +13,9 @@
 @class RightViewController;
 
 @interface RootViewController : NSObject<NSCopying>
+
 @property(nonatomic,strong)DDMenuController *ddMenu;
 
-+(RootViewController *)sharedRootViewController;
++ (RootViewController *)sharedRootViewController;
+
 @end

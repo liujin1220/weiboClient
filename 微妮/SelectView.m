@@ -9,6 +9,7 @@
 #import "SelectView.h"
 
 @interface SelectView()
+
 @end
 
 @implementation SelectView
@@ -32,9 +33,8 @@
     return self;
 }
 
+#pragma mark - Draw
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     //获得处理的上下文
@@ -54,6 +54,5 @@
     //连接上面定义的坐标点
     CGContextStrokePath(context);
 }
-
 
 @end

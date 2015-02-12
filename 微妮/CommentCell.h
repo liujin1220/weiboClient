@@ -11,17 +11,21 @@
 #import "SelectedWeiboName.h"
 @class CommentModel;
 @class RTLabel;
+
 @interface CommentCell : UITableViewCell
+
 /*
  * @brief   填充数据
  * @param   INPUT   dict 微博数据
  * @return  无返回
  */
--(void)setContentData:(NSDictionary *)dict;
+- (void)setContentData:(NSDictionary *)dict;
+
 /*
  * @brief   计算高度
  * @param   INPUT   dict 微博数据,name 微博名称
  * @return  无返回
  */
-+(int)heightWith:(NSMutableDictionary*)dict WithWeiboName:(NSString *)name;
++ (int)heightWith:(NSMutableDictionary*)dict WithWeiboName:(NSString *)name;
+
 @end

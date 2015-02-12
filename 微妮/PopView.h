@@ -9,13 +9,17 @@
 #import <UIKit/UIKit.h>
 
 @protocol SinaOAuthFinishedDelegate <NSObject>
--(void)SinaOAuthFinishedWithCode:(NSString *)code;
+
+- (void)SinaOAuthFinishedWithCode:(NSString *)code;
+
 @end
 
 typedef void(^dismissViewBlock)(void);
 
 @interface PopView : UIView<UIWebViewDelegate>
-@property(nonatomic,strong)UIWebView *mwebView;
-@property(nonatomic,copy)dismissViewBlock block;
-@property(nonatomic,weak)id<SinaOAuthFinishedDelegate> delegate;
+
+@property (nonatomic, strong)UIWebView *mwebView;
+@property (nonatomic, copy)dismissViewBlock block;
+@property (nonatomic, weak)id<SinaOAuthFinishedDelegate> delegate;
+
 @end

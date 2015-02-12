@@ -12,10 +12,20 @@
 #import "AFHTTPRequestOperationManager.h"
 @class AuthorizeData;
 @class SelectedWeiboName;
-@interface AuthorizeViewController : UIViewController<UIWebViewDelegate>
-//定义一个Block类型
+
 typedef void (^weiboAuthorized)();
-@property(nonatomic,strong)weiboAuthorized block;
-//初始化方法
+
+@interface AuthorizeViewController : UIViewController<UIWebViewDelegate>
+
+@property (nonatomic, strong) weiboAuthorized block;
+
+/**
+ *  认证页面初始化
+ *
+ *  @param weiboName 微博名称
+ *
+ *  @return 对象
+ */
 - (instancetype)initWithWeiboName:(NSString *)weiboName;
+
 @end

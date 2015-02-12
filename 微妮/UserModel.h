@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface userModel : NSObject
+@interface UserModel : NSObject
 //头像
 @property(nonatomic,strong)NSString *headImageUrl;
 //昵称

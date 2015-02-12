@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "AFHTTPRequestOperationManager.h"
 #import "CONSTS.h"
-@interface UserInfoData : NSObject
+
 typedef void (^dataLoadComplete) (NSMutableDictionary *);
-@property(nonatomic,strong)dataLoadComplete block;
--(void)getUserDataWithUrlStr:(NSString *)url;
+
+@interface UserInfoData : NSObject
+
+@property (nonatomic, strong) dataLoadComplete block;
+
+- (void)getUserDataWithUrlStr:(NSString *)url;
+
 @end

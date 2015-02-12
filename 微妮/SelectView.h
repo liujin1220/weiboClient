@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface SelectView : UIView
-@property(strong,nonatomic)UIButton *sinaButton;
-@property(strong,nonatomic)UIButton *tencentButton;
+
+@property (strong, nonatomic) UIButton *sinaButton;
+@property (strong, nonatomic) UIButton *tencentButton;
+
 @end
