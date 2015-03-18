@@ -9,7 +9,7 @@
 #import "BaseViewController.h"
 #import "UIImageView+WebCache.h"
 @class SelectedWeiboName;
-@class UserInfoData;
+@class BaseRequest;
 @class AuthorizeViewController;
 
 @interface LeftViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>

@@ -9,7 +9,7 @@
 #import "BaseViewController.h"
 #import "MJRefresh.h"
 @class WeiboCell;
-@class UserInfoData;
+@class BaseRequest;
 @class CommentCell;
 
 @interface DetailViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate>

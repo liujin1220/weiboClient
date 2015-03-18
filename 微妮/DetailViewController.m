@@ -7,11 +7,11 @@
 //
 
 #import "DetailViewController.h"
-#import "UserInfoData.h"
+#import "BaseRequest.h"
 #import "WeiboCell.h"
 #import "CommentCell.h"
 @interface DetailViewController (){
-    UserInfoData *commentRequest;
+    BaseRequest *_commentRequest;
     // sina
     int page;   // 页数
     
@@ -57,8 +57,6 @@
     [self.weiboDetailView setSeparatorInset:UIEdgeInsetsMake(0,15,0,15)];
     [self.view addSubview:self.weiboDetailView];
     [self setupRefresh];
-    // 初始化
-    commentRequest = [[UserInfoData alloc]init];
     _weiboID = [[_singelWeiboData objectForKey:@"id"] longLongValue];
     rootid = _weiboID;
     if ([[_singelWeiboData objectForKey:@"type"]isEqualToNumber:[NSNumber numberWithInt:2]]) {
@@ -94,10 +92,10 @@
     NSString *requestStr;
     if ([[SelectedWeiboName sharedWeiboName].weiboName isEqualToString:@"新浪微博"]) {
         requestStr = [NSString stringWithFormat:@"https://api.weibo.com/2/comments/show.json?access_token=%@&id=%lld&since_id=0&count=3&page=%d",[userData objectForKey:@"token"],_weiboID,page];
-        [commentRequest getUserDataWithUrlStr:requestStr];
+        _commentRequest = [[BaseRequest alloc]initWithURL:requestStr];
         // 处理回调数据
         __weak typeof(self) weakSelf = self;
-        commentRequest.block = ^(NSMutableDictionary *dic) {
+        [_commentRequest GETRequestWithCompletionHandler:^(NSDictionary *dic){
             if ([dic objectForKey:@"total_number"]) {
                 if (weakSelf.isLoadMore) {
                     // 拼接
@@ -114,12 +112,14 @@
                     }
                 });
             }
-        };
+
+        }];
     }else {
         requestStr = [NSMutableString stringWithFormat:@"https://open.t.qq.com/api/t/re_list?format=json&oauth_consumer_key=%@&access_token=%@&openid=%@&oauth_version=2.a&type=0&clientip=127.0.0.1&scope=all&reqnum=2&flag=2&pageflag=%d&rootid=%lld&twitterid=%lld&pagetime=%ld",kTAppKey,[userData objectForKey:@"tencent_token"],[userData objectForKey:@"openid"],pageflag,rootid,twitterid,(long)pagetime];
-        [commentRequest getUserDataWithUrlStr:requestStr];//处理回调数据
+        _commentRequest = [[BaseRequest alloc]initWithURL:requestStr];
+        // 处理回调数据
         __weak typeof(self) weakSelf = self;
-        commentRequest.block = ^(NSDictionary *dic){
+        [_commentRequest GETRequestWithCompletionHandler:^(NSDictionary *dic){
             if ((NSNull *)[dic objectForKey:@"data"] != [NSNull null] ) {
                 if (weakSelf.isLoadMore) {
                     // 拼接
@@ -134,8 +134,8 @@
                 // 刷新数据
                 [weakSelf.weiboDetailView reloadData];
             });
-        };
 
+        }];
     }
 }
 #pragma mark - Refresh and load more methods

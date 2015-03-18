@@ -8,7 +8,7 @@
 
 #import "LeftViewController.h"
 #import "SelectedWeiboName.h"
-#import "UserInfoData.h"
+#import "BaseRequest.h"
 #import "AuthorizeViewController.h"
 
 #define kWeiboReLogin @"kWeiboReLogin"
@@ -16,8 +16,8 @@
 @interface LeftViewController ()
 {
     NSUserDefaults  *userDefault;   // 保存信息
-    UserInfoData    *user_sina;     // 新浪
-    UserInfoData    *user_tencent;  // 腾讯
+    BaseRequest    *_userSina;     // 新浪
+    BaseRequest    *_userTencent;  // 腾讯
 }
 
 @property(nonatomic,strong)UITableView *tableView;
@@ -48,10 +48,6 @@
     [logOut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [logOut addTarget:self action:@selector(logOutAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:logOut];
-    
-    // 加载数据
-    user_sina = [[UserInfoData alloc]init];
-    user_tencent = [[UserInfoData alloc]init];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -160,20 +156,20 @@
     cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width/2;
     if ([text isEqualToString:@"新浪微博"]) {
         NSString *url = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?access_token=%@&uid=%@",[userDefault objectForKey:@"token"],[userDefault objectForKey:@"uid"]];
-        [user_sina getUserDataWithUrlStr:url];
-        user_sina.block = ^(NSMutableDictionary *dic){
+        _userSina = [[BaseRequest alloc]initWithURL:url];
+        [_userSina GETRequestWithCompletionHandler:^(NSDictionary *dic){
             cell.textLabel.text = [dic objectForKey:@"screen_name"];
             NSString *photoStr =[NSString stringWithFormat:@"%@",[dic objectForKey:@"profile_image_url"]];
             [cell.imageView setImageWithURL:[NSURL URLWithString:photoStr] placeholderImage:[UIImage imageNamed:@"me_head_default"]];
-        };
+        }];
     }else{
         NSString *tencentUrl = [NSString stringWithFormat:@"http://open.t.qq.com/api/user/info?format=json&oauth_consumer_key=%@&access_token=%@&openid=%@&oauth_version=2.a&type=0&clientip=127.0.0.1&scope=all",kTAppKey,[userDefault objectForKey:@"tencent_token"],[userDefault objectForKey:@"openid"]];
-        [user_tencent getUserDataWithUrlStr:tencentUrl];
-        user_tencent.block = ^(NSMutableDictionary *dic){
+        _userTencent = [[BaseRequest alloc]initWithURL:tencentUrl];
+        [_userTencent GETRequestWithCompletionHandler:^(NSDictionary *dic){
             cell.textLabel.text = [[dic objectForKey:@"data"]objectForKey:@"nick"];
             NSString *tphotoStr =[NSString stringWithFormat:@"%@/50",[[dic objectForKey:@"data"]objectForKey:@"head"]];
             [cell.imageView setImageWithURL:[NSURL URLWithString:tphotoStr] placeholderImage:[UIImage imageNamed:@"me_head_default"]];
-        };
+        }];
     }
     return cell;
 }
@@ -181,9 +177,8 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 44;
+     return 44;
 }
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView* myView = [[UIView alloc] init];

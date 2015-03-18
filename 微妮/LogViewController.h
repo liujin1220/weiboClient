@@ -12,7 +12,6 @@
 #import "CONSTS.h"
 #import "AuthorizeViewController.h"
 @class SelectedWeiboName;
-@class BlockButton;
 
 @interface LogViewController : UIViewController
 

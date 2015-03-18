@@ -7,7 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PersonalModel.h"
+
+@protocol ButtonActionDalegate;
 
 @interface PersonalHeaderView : UIView
+
+@property (nonatomic, weak) id <ButtonActionDalegate> buttonActionDelegate;
+
+- (void)setContentDataWithUserModel:(PersonalModel *)model;
+
+@end
+
+
+@protocol ButtonActionDalegate <NSObject>
+
+- (void)buttonActions:(UIButton *)button;
 
 @end

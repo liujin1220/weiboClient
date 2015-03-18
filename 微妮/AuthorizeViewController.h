@@ -17,7 +17,7 @@ typedef void (^weiboAuthorized)();
 
 @interface AuthorizeViewController : UIViewController<UIWebViewDelegate>
 
-@property (nonatomic, strong) weiboAuthorized block;
+@property (nonatomic, copy) weiboAuthorized block;
 
 /**
  *  认证页面初始化

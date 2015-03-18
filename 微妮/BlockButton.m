@@ -21,6 +21,7 @@
 
 -(void)clickAction{
     _block(self);
+    self.block = nil;
 }
 /*
 // Only override drawRect: if you perform custom drawing.

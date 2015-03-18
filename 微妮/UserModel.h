@@ -25,7 +25,10 @@
 @property(nonatomic,strong)NSString *retweetedText;
 //转发的图片
 @property(nonatomic,strong)NSArray *retweetedPicUrls;
-
+//地理信息字段
+@property(nonatomic,retain)NSDictionary *geo;
+//微博图片
+@property(nonatomic,retain)NSString *thumbnailImage;
 /*
  * @brief   填充数据
  * @param   INPUT   dict 微博数据，name 微博名称

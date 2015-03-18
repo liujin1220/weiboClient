@@ -8,7 +8,7 @@
 
 #import "HomeViewController.h"
 #import "tencentCell.h"
-#import "UserInfoData.h"
+#import "BaseRequest.h"
 #import "WeiboCell.h"
 #import "DetailViewController.h"
 
@@ -34,7 +34,7 @@ typedef void (^selectedBlock) (NSString *);
 @end
 
 @interface HomeViewController (){
-    UserInfoData *userInfoRequset;
+    BaseRequest *_userInfoRequset;
     // tencent
     int _pageflag;           // 用于翻页（0：第一页，1：向下翻页，2：向上翻页）
     NSInteger _pagetime;     // (0:第一页)填上一次请求返回的最后一条记录时间
@@ -64,8 +64,7 @@ typedef void (^selectedBlock) (NSString *);
         _pageflag   = 0;
         _pagetime   = 0;
         _lastTime   = 0;
-        // 加载数据
-        userInfoRequset = [[UserInfoData alloc]init];
+        
         _weiboData = [[NSMutableArray alloc]init];
         _sinaListData = @{@"最新微博" : kSinaPublicWeibo,
                           @"朋友圈" : kSinaFriends,
@@ -173,11 +172,10 @@ typedef void (^selectedBlock) (NSString *);
         // 新浪微博
         NSString *sinaUrl = [NSString stringWithFormat:@"%@?&access_token=%@&page=%d&count=5",[_sinaListData objectForKey:_selectedName],[userData objectForKey:@"token"],_page];
         // 请求数据
-        [userInfoRequset getUserDataWithUrlStr:sinaUrl];
+        _userInfoRequset = [[BaseRequest alloc]initWithURL:sinaUrl];
         __weak typeof(self) weakSelf = self;
-        //回调数据处理
+        [_userInfoRequset GETRequestWithCompletionHandler:^(NSDictionary *dic){
 #warning errorDeal
-        userInfoRequset.block = ^(NSMutableDictionary *dic){
             if (weakSelf.isLoadMore) {
                 [weakSelf.weiboData addObjectsFromArray:[dic objectForKey:@"statuses"]];
             }else{
@@ -191,7 +189,9 @@ typedef void (^selectedBlock) (NSString *);
                     [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 }
             });
-        };
+
+        }];
+
     }else if([weiboName isEqualToString:@"腾讯微博"]&&[userData objectForKey:@"tencent_token"]) {
         // 腾讯微博
         // 通用参数oauth_consumer_key&access_token&openid&clientip&oauth_version=2.a&scope=all
@@ -204,10 +204,9 @@ typedef void (^selectedBlock) (NSString *);
             [tencentUrl appendFormat:@"&pageflag=%d&pagetime=%ld&lastid=0&type=0&contenttype=0",_pageflag,(long)_pagetime];
         }
         // 请求数据
-        [userInfoRequset getUserDataWithUrlStr:tencentUrl];
-        // 处理回调数据
-         __weak typeof(self) weakSelf = self;
-        userInfoRequset.block = ^(NSMutableDictionary *dic){
+        _userInfoRequset = [[BaseRequest alloc]initWithURL:tencentUrl];
+        __weak typeof(self) weakSelf = self;
+        [_userInfoRequset GETRequestWithCompletionHandler:^(NSDictionary *dic){
             if ([[dic objectForKey:@"ret"]integerValue] == 0) {
                 //ret : 返回值，0-成功，非0-失败,
                 if (weakSelf.isLoadMore) {
@@ -221,7 +220,8 @@ typedef void (^selectedBlock) (NSString *);
                     [weakSelf.tableView reloadData];
                 });
             }
-        };
+
+        }];
     }
 }
 

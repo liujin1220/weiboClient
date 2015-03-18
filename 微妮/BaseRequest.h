@@ -10,12 +10,12 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "CONSTS.h"
 
-typedef void (^dataLoadComplete) (NSMutableDictionary *);
+typedef void (^RequestCompletionHandler) (NSDictionary *);
 
-@interface UserInfoData : NSObject
+@interface BaseRequest : NSObject
 
-@property (nonatomic, strong) dataLoadComplete block;
+@property (nonatomic, strong) RequestCompletionHandler completionHandler;
 
-- (void)getUserDataWithUrlStr:(NSString *)url;
-
+- (id)initWithURL:(NSString *)urlString;
+- (void)GETRequestWithCompletionHandler:(RequestCompletionHandler)completion;
 @end

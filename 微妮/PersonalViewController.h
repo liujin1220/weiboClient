@@ -8,6 +8,8 @@
 
 #import "BaseViewController.h"
 #import "SelectedWeiboName.h"
-@interface PersonalViewController : BaseViewController
+#import "PersonalHeaderView.h"
+
+@interface PersonalViewController : BaseViewController<ButtonActionDalegate,UITableViewDelegate,UITableViewDataSource>
 
 @end

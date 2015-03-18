@@ -7,7 +7,6 @@
 //
 
 #import "LogViewController.h"
-#import "BlockButton.h"
 #import "SelectedWeiboName.h"
 
 #define KSCALE              (2/5.0)     // 比例

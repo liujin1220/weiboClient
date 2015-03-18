@@ -14,6 +14,7 @@
     if (self) {
         _picUrls = [[NSArray alloc]init];
         _retweetedPicUrls = [[NSArray alloc]init];
+        _geo = [NSDictionary dictionary];
     }
     return self;
 }
@@ -24,14 +25,19 @@
         _time = [NSString stringWithFormat:@"%@",[self formatDaySinaTime:[dict objectForKey:@"created_at"]]];
         _source = [NSString stringWithFormat:@"%@",[dict objectForKey:@"source"]];
         //例如<a href=\"http://app.weibo.com/t/feed/3G5oUM\" rel=\"nofollow\">iPhone 5s</a>
-        _source = [_source stringByReplacingOccurrencesOfString:@"</a>" withString:@""];
-        _source = [_source substringFromIndex:[_source rangeOfString:@">"].location+1];
+        //字符串判空操作
+        if (_source.length>0 && [_source isKindOfClass:[NSNull class]] == YES) {
+            _source = [_source stringByReplacingOccurrencesOfString:@"</a>" withString:@""];
+            _source = [_source substringFromIndex:[_source rangeOfString:@">"].location+1];
+        }
         _picUrls = [dict objectForKey:@"pic_urls"];
         _mainBody = [dict objectForKey:@"text"];
         if ([dict objectForKey:@"retweeted_status"]) {
             _retweetedText = [NSString stringWithFormat:@"@%@:%@",[[[dict objectForKey:@"retweeted_status"] objectForKey:@"user"] objectForKey:@"screen_name"],[[dict objectForKey:@"retweeted_status"] objectForKey:@"text"]];
             _retweetedPicUrls = [[dict objectForKey:@"retweeted_status"] objectForKey:@"pic_urls"];
         }
+        _geo = [dict objectForKey:@"geo"];
+        _thumbnailImage = [NSString stringWithFormat:@"%@",[dict objectForKey:@"thumbnail_pic"]];
     }else{
         //腾讯微博
         _headImageUrl = [NSString stringWithFormat:@"%@/50",[dict objectForKey:@"head"]];

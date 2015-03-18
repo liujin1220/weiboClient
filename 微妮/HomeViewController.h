@@ -11,7 +11,7 @@
 #import "MJRefresh.h"
 #import "CONSTS.h"   
 @class WeiboCell;
-@class UserInfoData;
+@class BaseRequest;
 @class DetailViewController;
 
 @interface HomeViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate>

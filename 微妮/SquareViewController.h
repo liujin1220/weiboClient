@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "SelectedWeiboName.h"
+@class NearbyWeiboMapViewController;
 @interface SquareViewController : BaseViewController
 
 @end

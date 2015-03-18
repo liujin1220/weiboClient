@@ -169,7 +169,10 @@
         
         // 成功
         [self dismissViewControllerAnimated:YES completion:nil];
-        self.block();
+        if (_block) {
+            _block();
+        }
+        self.block = nil;
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
